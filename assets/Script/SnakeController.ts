@@ -16,13 +16,13 @@ const { ccclass, property } = _decorator;
 @ccclass('SnakeController')
 export class SnakeController extends Component {
 
-    private static _snakeSpeed = 1;
-    private static _startTails = 2;
+    private static _SNAKE_SPEED = 1;
+    private static _INIT_NUM_OF_TAILS = 2;
 
-    private _upDir: Vec3 = new Vec3(0, SnakeController._snakeSpeed, 0);
-    private _downDir: Vec3 = new Vec3(0, -1 * SnakeController._snakeSpeed, 0);
-    private _rightDir: Vec3 = new Vec3(SnakeController._snakeSpeed, 0, 0);
-    private _leftDir: Vec3 = new Vec3(-1 * SnakeController._snakeSpeed, 0, 0);
+    private _upDir: Vec3 = new Vec3(0, SnakeController._SNAKE_SPEED, 0);
+    private _downDir: Vec3 = new Vec3(0, -1 * SnakeController._SNAKE_SPEED, 0);
+    private _rightDir: Vec3 = new Vec3(SnakeController._SNAKE_SPEED, 0, 0);
+    private _leftDir: Vec3 = new Vec3(-1 * SnakeController._SNAKE_SPEED, 0, 0);
     private _nextDir: Vec3;
 
     private _snake: Node[] = [];
@@ -54,13 +54,13 @@ export class SnakeController extends Component {
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
-    initSnake() {
+    private initSnake() {
         this.initTails();
         this.initHead();
     }
 
-    initTails() {
-        for (let i = 0; i < SnakeController._startTails; i++) {
+    private initTails() {
+        for (let i = 0; i < SnakeController._INIT_NUM_OF_TAILS; i++) {
             let tail = instantiate(this.tailPrfb);
             tail.setPosition(0, 0, 0);
             tail.parent = this.node;
@@ -70,7 +70,7 @@ export class SnakeController extends Component {
         }
     }
 
-    initHead() {
+    private initHead() {
         let head = instantiate(this.tailPrfb);
         head.setPosition(0, 0, 0);
         head.parent = this.node;
@@ -79,7 +79,7 @@ export class SnakeController extends Component {
         this._snakePositions.push(new Vec3(head.getPosition()));
     }
 
-    onKeyDown(event: EventKeyboard) {
+    private onKeyDown(event: EventKeyboard) {
         switch (event.keyCode) {
             case KeyCode.ARROW_UP:
                 if (this._nextDir != this._downDir) {
@@ -108,7 +108,7 @@ export class SnakeController extends Component {
 
         this._moveTime += deltaTime;
 
-        if (this._moveTime > SnakeController._snakeSpeed) {
+        if (this._moveTime > SnakeController._SNAKE_SPEED) {
             this._moveTime = 0;
 
             let headPos = this.getHeadPosition();

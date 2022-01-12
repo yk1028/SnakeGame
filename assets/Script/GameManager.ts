@@ -32,17 +32,17 @@ export class GameManager extends Component {
         this.initApple();
     }
 
-    initApple() {
+    private initApple() {
         this._apple = instantiate(this.applePrfb);
         this.locateApple();
         this._apple.parent = this.node;
     }
 
-    locateApple() {
+    private locateApple() {
         this._apple.setPosition(this.generateRandomPosition(), this.generateRandomPosition(), 0);
     }
 
-    generateRandomPosition() {
+    private generateRandomPosition() {
         return Math.floor(Math.random() * GameManager._MAPSIZE * 2 + 1) - GameManager._MAPSIZE;
     }
 
