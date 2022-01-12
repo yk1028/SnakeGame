@@ -49,6 +49,7 @@ export class GameManager extends Component {
     update (deltaTime: number) {
         if (this.snakeCtrl.canEatApple(this._apple.getPosition())) {
             this.locateApple();
+            this.snakeCtrl.addTail();
         }
     }
 }

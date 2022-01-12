@@ -37,6 +37,15 @@ export class SnakeController extends Component {
         return apple.equals(this.getHeadPosition());
     }
 
+    addTail() {
+        let tail = instantiate(this.tailPrfb);
+        tail.setPosition(new Vec3(this._snakePositions[0]));
+        tail.parent = this.node;
+
+        this._snake.unshift(tail);
+        this._snakePositions.unshift(new Vec3(tail.getPosition()));
+    }
+
     start() {
         this._nextDir = this._rightDir;
 
