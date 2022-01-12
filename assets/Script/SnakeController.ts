@@ -1,4 +1,4 @@
-import { _decorator, Component, Vec3, input, Input, EventKeyboard, Animation, KeyCode} from 'cc';
+import { _decorator, Component, Vec3, input, Input, EventKeyboard, Animation, KeyCode, Prefab, instantiate, Node } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -16,56 +16,98 @@ const { ccclass, property } = _decorator;
 @ccclass('SnakeController')
 export class SnakeController extends Component {
 
-    private static _snakeSpeed = 0.01;
+    private static _snakeSpeed = 1;
+    private static _startTails = 2;
 
-    private _curPos: Vec3 = new Vec3();
+    private _upDir: Vec3 = new Vec3(0, SnakeController._snakeSpeed, 0);
+    private _downDir: Vec3 = new Vec3(0, -1 * SnakeController._snakeSpeed, 0);
+    private _rightDir: Vec3 = new Vec3(SnakeController._snakeSpeed, 0, 0);
+    private _leftDir: Vec3 = new Vec3(-1 * SnakeController._snakeSpeed, 0, 0);
+    private _nextDir: Vec3;
 
-    private _upPos: Vec3 = new Vec3(0, SnakeController._snakeSpeed, 0);
-    private _downPos: Vec3 = new Vec3(0, -1 * SnakeController._snakeSpeed, 0);
-    private _rightPos: Vec3 = new Vec3(SnakeController._snakeSpeed, 0, 0);
-    private _leftPos: Vec3 = new Vec3(-1 * SnakeController._snakeSpeed, 0, 0);
-    private _nextPos: Vec3;
+    private _snake: Node[] = [];
+    private _snakePositions: Vec3[] = [];
 
-    // [2]
-    // @property
-    // serializableDummy = 0;
+    private _moveTime = 0;
+
+    @property({ type: Prefab })
+    public tailPrfb: Prefab | null = null;
 
     start() {
-        this._nextPos = this._rightPos;
+        this._nextDir = this._rightDir;
+
+        this.initSnake();
+
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+    }
+
+    initSnake() {
+        this.initTails();
+        this.initHead();
+    }
+
+    initTails() {
+        for (let i = 0; i < SnakeController._startTails; i++) {
+            let tail = instantiate(this.tailPrfb);
+            tail.setPosition(0, 0, 0);
+            tail.parent = this.node;
+
+            this._snake.push(tail);
+            this._snakePositions.push(new Vec3(tail.getPosition()));
+        }
+    }
+
+    initHead() {
+        let head = instantiate(this.tailPrfb);
+        head.setPosition(0, 0, 0);
+        head.parent = this.node;
+
+        this._snake.push(head);
+        this._snakePositions.push(new Vec3(head.getPosition()));
     }
 
     onKeyDown(event: EventKeyboard) {
         switch (event.keyCode) {
             case KeyCode.ARROW_UP:
-                this._nextPos = this._upPos;
+                if (this._nextDir != this._downDir) {
+                    this._nextDir = this._upDir;
+                }
                 break;
             case KeyCode.ARROW_DOWN:
-                this._nextPos = this._downPos;
+                if (this._nextDir != this._upDir) {
+                    this._nextDir = this._downDir;
+                }
                 break;
             case KeyCode.ARROW_LEFT:
-                this._nextPos = this._leftPos;
+                if (this._nextDir != this._rightDir) {
+                    this._nextDir = this._leftDir;
+                }
                 break;
             case KeyCode.ARROW_RIGHT:
-                this._nextPos = this._rightPos;
+                if (this._nextDir != this._leftDir) {
+                    this._nextDir = this._rightDir;
+                }
                 break;
         }
     }
 
     update(deltaTime: number) {
-        this.node.getPosition(this._curPos);
-        Vec3.add(this._curPos, this._curPos, this._nextPos);
-        this.node.setPosition(this._curPos);
+
+        this._moveTime += deltaTime;
+
+        if (this._moveTime > SnakeController._snakeSpeed) {
+            this._moveTime = 0;
+
+            let headPos = new Vec3(this._snakePositions[this._snakePositions.length - 1]);
+
+            Vec3.add(headPos, headPos, this._nextDir);
+
+            this._snakePositions.shift();
+            this._snakePositions.push(headPos);
+
+            for (let i = 0; i < this._snake.length; i++) {
+                this._snake[i].setPosition(new Vec3(this._snakePositions[i]));
+            }
+        }
     }
 }
-
-/**
- * [1] Class member could be defined like this.
- * [2] Use `property` decorator if your want the member to be serializable.
- * [3] Your initialization goes here.
- * [4] Your update function goes here.
- *
- * Learn more about scripting: https://docs.cocos.com/creator/3.4/manual/en/scripting/
- * Learn more about CCClass: https://docs.cocos.com/creator/3.4/manual/en/scripting/ccclass.html
- * Learn more about life-cycle callbacks: https://docs.cocos.com/creator/3.4/manual/en/scripting/life-cycle-callbacks.html
- */
