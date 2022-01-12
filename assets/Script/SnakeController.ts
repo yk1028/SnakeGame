@@ -46,6 +46,17 @@ export class SnakeController extends Component {
         this._snakePositions.unshift(new Vec3(tail.getPosition()));
     }
 
+    isHitTail() {
+        let headPos = this._snakePositions[this._snakePositions.length - 1];
+
+        for (let i = 0; i < this._snakePositions.length - 1; i++) {
+            if (headPos.equals(this._snakePositions[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     start() {
         this._nextDir = this._rightDir;
 
@@ -60,9 +71,9 @@ export class SnakeController extends Component {
     }
 
     private initTails() {
-        for (let i = 0; i < SnakeController._INIT_NUM_OF_TAILS; i++) {
+        for (let i = SnakeController._INIT_NUM_OF_TAILS - 1; i >= 0; i--) {
             let tail = instantiate(this.tailPrfb);
-            tail.setPosition(0, 0, 0);
+            tail.setPosition(-1 * (i + 1), 0, 0);
             tail.parent = this.node;
 
             this._snake.push(tail);

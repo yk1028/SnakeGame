@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Prefab, instantiate, Node } from 'cc';
+import { _decorator, Component, Prefab, instantiate, Node, input, Input, game } from 'cc';
 import { SnakeController } from './SnakeController';
 const { ccclass, property } = _decorator;
 
@@ -15,12 +15,18 @@ const { ccclass, property } = _decorator;
  *
  */
 
+ enum GameState{
+    GS_PLAYING,
+    GS_END,
+};
+
 @ccclass('GameManager')
 export class GameManager extends Component {
 
     private static _MAPSIZE = 5;
 
     private _apple: Node = null;
+    private _curState: GameState = GameState.GS_PLAYING;
 
     @property({ type: Prefab })
     public applePrfb: Prefab | null = null;
@@ -47,9 +53,20 @@ export class GameManager extends Component {
     }
 
     update (deltaTime: number) {
-        if (this.snakeCtrl.canEatApple(this._apple.getPosition())) {
-            this.locateApple();
-            this.snakeCtrl.addTail();
+        switch(this._curState) {
+            case GameState.GS_PLAYING:
+                if (this.snakeCtrl.canEatApple(this._apple.getPosition())) {
+                    this.locateApple();
+                    this.snakeCtrl.addTail();
+                }
+
+                if (this.snakeCtrl.isHitTail()) {
+                    this._curState = GameState.GS_END;
+                    game.end();
+                }
+                break;
+            case GameState.GS_END:
+                break;
         }
     }
 }
