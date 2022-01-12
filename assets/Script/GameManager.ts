@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Prefab, instantiate, Node, input, Input, game } from 'cc';
+import { _decorator, Component, Prefab, instantiate, Node, game, Label } from 'cc';
 import { SnakeController } from './SnakeController';
 const { ccclass, property } = _decorator;
 
@@ -38,9 +38,16 @@ export class GameManager extends Component {
     @property({ type: SnakeController })
     public snakeCtrl: SnakeController = null;
 
+    @property({ type: Label })
+    public scoreLabel: Label | null = null;
+
     start() {
         this.initFence();
         this.initApple();
+
+        if (this.scoreLabel) {
+            this.scoreLabel.string = '0';
+        }
     }
 
     private initFence() {
@@ -78,6 +85,7 @@ export class GameManager extends Component {
                 if (this.snakeCtrl.canEatApple(this._apple.getPosition())) {
                     this.locateApple();
                     this.snakeCtrl.addTail();
+                    this.onEatApple();
                 }
 
                 if (this.snakeCtrl.isHitTail() || this.snakeCtrl.isOut(GameManager._MAPSIZE)) {
@@ -88,5 +96,9 @@ export class GameManager extends Component {
             case GameState.GS_END:
                 break;
         }
+    }
+
+    private onEatApple() {
+        this.scoreLabel.string = '' + this.snakeCtrl.getScore();
     }
 }

@@ -63,6 +63,10 @@ export class SnakeController extends Component {
             || headPos.y >= mapSize || headPos.y <= mapSize * -1;
     }
 
+    getScore() {
+        return this._snake.length - 1 - SnakeController._INIT_NUM_OF_TAILS;
+    }
+
     start() {
         this._nextDir = this._rightDir;
 
