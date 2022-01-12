@@ -1,5 +1,6 @@
 
-import { _decorator, Component, Prefab, instantiate } from 'cc';
+import { _decorator, Component, Prefab, instantiate, Node } from 'cc';
+import { SnakeController } from './SnakeController';
 const { ccclass, property } = _decorator;
 
 /**
@@ -19,25 +20,35 @@ export class GameManager extends Component {
 
     private static _MAPSIZE = 5;
 
+    private _apple: Node = null;
+
     @property({ type: Prefab })
     public applePrfb: Prefab | null = null;
 
+    @property({ type: SnakeController })
+    public snakeCtrl: SnakeController = null;
+
     start() {
+        this.initApple();
+    }
+
+    initApple() {
+        this._apple = instantiate(this.applePrfb);
         this.locateApple();
+        this._apple.parent = this.node;
     }
 
     locateApple() {
-        let apple = instantiate(this.applePrfb);
-
-        apple.setPosition(this.generateRandomPosition(), this.generateRandomPosition(), 0);
-        apple.parent = this.node;
+        this._apple.setPosition(this.generateRandomPosition(), this.generateRandomPosition(), 0);
     }
 
     generateRandomPosition() {
         return Math.floor(Math.random() * GameManager._MAPSIZE * 2 + 1) - GameManager._MAPSIZE;
     }
 
-    // update (deltaTime: number) {
-    //     // [4]
-    // }
+    update (deltaTime: number) {
+        if (this.snakeCtrl.canEatApple(this._apple.getPosition())) {
+            this.locateApple();
+        }
+    }
 }

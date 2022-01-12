@@ -1,4 +1,4 @@
-import { _decorator, Component, Vec3, input, Input, EventKeyboard, Animation, KeyCode, Prefab, instantiate, Node } from 'cc';
+import { _decorator, Component, Vec3, input, Input, EventKeyboard, KeyCode, Prefab, instantiate, Node } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -32,6 +32,10 @@ export class SnakeController extends Component {
 
     @property({ type: Prefab })
     public tailPrfb: Prefab | null = null;
+
+    canEatApple(apple: Vec3) {
+        return apple.equals(this.getHeadPosition());
+    }
 
     start() {
         this._nextDir = this._rightDir;
@@ -98,7 +102,7 @@ export class SnakeController extends Component {
         if (this._moveTime > SnakeController._snakeSpeed) {
             this._moveTime = 0;
 
-            let headPos = new Vec3(this._snakePositions[this._snakePositions.length - 1]);
+            let headPos = this.getHeadPosition();
 
             Vec3.add(headPos, headPos, this._nextDir);
 
@@ -109,5 +113,9 @@ export class SnakeController extends Component {
                 this._snake[i].setPosition(new Vec3(this._snakePositions[i]));
             }
         }
+    }
+
+    private getHeadPosition() {
+        return new Vec3(this._snakePositions[this._snakePositions.length - 1]);
     }
 }
