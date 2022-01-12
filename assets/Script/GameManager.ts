@@ -15,7 +15,7 @@ const { ccclass, property } = _decorator;
  *
  */
 
- enum GameState{
+enum GameState {
     GS_PLAYING,
     GS_END,
 };
@@ -23,7 +23,8 @@ const { ccclass, property } = _decorator;
 @ccclass('GameManager')
 export class GameManager extends Component {
 
-    private static _MAPSIZE = 5;
+    private static _MAPSIZE = 10;
+    private static _NE_MAPSIZE = -10;
 
     private _apple: Node = null;
     private _curState: GameState = GameState.GS_PLAYING;
@@ -31,11 +32,29 @@ export class GameManager extends Component {
     @property({ type: Prefab })
     public applePrfb: Prefab | null = null;
 
+    @property({ type: Prefab })
+    public fencePrfb: Prefab | null = null;
+
     @property({ type: SnakeController })
     public snakeCtrl: SnakeController = null;
 
     start() {
+        this.initFence();
         this.initApple();
+    }
+
+    private initFence() {
+
+        for (let i = GameManager._NE_MAPSIZE; i <= GameManager._MAPSIZE; i++) {
+            for (let j = GameManager._NE_MAPSIZE; j <= GameManager._MAPSIZE; j++) {
+                if (i == GameManager._NE_MAPSIZE || j == GameManager._NE_MAPSIZE
+                    || i == GameManager._MAPSIZE || j == GameManager._MAPSIZE) {
+                    let fence = instantiate(this.fencePrfb);
+                    fence.setPosition(i, j, 0);
+                    fence.parent = this.node;
+                }
+            }
+        }
     }
 
     private initApple() {
@@ -49,18 +68,19 @@ export class GameManager extends Component {
     }
 
     private generateRandomPosition() {
-        return Math.floor(Math.random() * GameManager._MAPSIZE * 2 + 1) - GameManager._MAPSIZE;
+        let positionBound = GameManager._MAPSIZE - 1;
+        return Math.floor(Math.random() * positionBound * 2 + 1) - positionBound;
     }
 
-    update (deltaTime: number) {
-        switch(this._curState) {
+    update(deltaTime: number) {
+        switch (this._curState) {
             case GameState.GS_PLAYING:
                 if (this.snakeCtrl.canEatApple(this._apple.getPosition())) {
                     this.locateApple();
                     this.snakeCtrl.addTail();
                 }
 
-                if (this.snakeCtrl.isHitTail()) {
+                if (this.snakeCtrl.isHitTail() || this.snakeCtrl.isOut(GameManager._MAPSIZE)) {
                     this._curState = GameState.GS_END;
                     game.end();
                 }

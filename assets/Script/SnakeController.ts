@@ -57,6 +57,12 @@ export class SnakeController extends Component {
         return false;
     }
 
+    isOut(mapSize: number) {
+        let headPos = this.getHeadPosition();
+        return headPos.x >= mapSize || headPos.x <= mapSize * -1
+            || headPos.y >= mapSize || headPos.y <= mapSize * -1;
+    }
+
     start() {
         this._nextDir = this._rightDir;
 
