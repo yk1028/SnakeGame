@@ -30,6 +30,8 @@ export class SnakeController extends Component {
 
     private _moveTime = 0;
 
+    private _isActive = false;
+
     @property({ type: Prefab })
     public tailPrfb: Prefab | null = null;
 
@@ -56,7 +58,10 @@ export class SnakeController extends Component {
         return this._snake.length - 1 - SnakeController._INIT_NUM_OF_TAILS;
     }
 
-    start() {
+    start() { }
+
+    init() {
+        this._isActive = true;
         this._nextDir = this._rightDir;
 
         this.initSnake();
@@ -115,18 +120,21 @@ export class SnakeController extends Component {
     }
 
     update(deltaTime: number) {
+        if (this._isActive) {
 
-        deltaTime *= SnakeController._SNAKE_SPEED;
-        this._moveTime += deltaTime;
+            deltaTime *= SnakeController._SNAKE_SPEED;
 
-        let headPos = this.updateHead(deltaTime);
-        this.updateTail();
+            this._moveTime += deltaTime;
 
-        if (this._moveTime >= 1) {
-            this._moveTime = 0;
+            let headPos = this.updateHead(deltaTime);
+            this.updateTail();
 
-            this._snakePositions.shift();
-            this._snakePositions.push(headPos);
+            if (this._moveTime >= 1) {
+                this._moveTime = 0;
+
+                this._snakePositions.shift();
+                this._snakePositions.push(headPos);
+            }
         }
     }
 
@@ -153,5 +161,15 @@ export class SnakeController extends Component {
 
     private getHeadPosition() {
         return new Vec3(this._snake[this._snakePositions.length - 1].getPosition());
+    }
+
+    reset() {
+        for (let i = 0; i < this._snake.length; i++) {
+            this._snake[i].removeFromParent();
+        }
+        this._snake = [];
+        this._snakePositions = [];
+        this._isActive = false;
+        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 }

@@ -16,6 +16,7 @@ const { ccclass, property } = _decorator;
  */
 
 enum GameState {
+    GS_INIT,
     GS_PLAYING,
     GS_END,
 };
@@ -27,7 +28,8 @@ export class GameManager extends Component {
     private static _NE_MAPSIZE = -10;
 
     private _apple: Node = null;
-    private _curState: GameState = GameState.GS_PLAYING;
+
+    private _curState: GameState = GameState.GS_INIT;
 
     @property({ type: Prefab })
     public applePrfb: Prefab | null = null;
@@ -41,9 +43,20 @@ export class GameManager extends Component {
     @property({ type: Label })
     public scoreLabel: Label | null = null;
 
+    @property({ type: Node })
+    public startMenu: Node = null;
+
     start() {
+        this.curState = GameState.GS_INIT;
+    }
+
+    init() {
         this.initFence();
         this.initApple();
+
+        if (this.startMenu) {
+            this.startMenu.active = true;
+        }
 
         if (this.scoreLabel) {
             this.scoreLabel.string = '0';
@@ -89,17 +102,46 @@ export class GameManager extends Component {
                 }
 
                 if (this.snakeCtrl.isOut(GameManager._MAPSIZE)) {
-                    this._curState = GameState.GS_END;
-                    // game.end();
-                    console.log("end");
+                    this.curState = GameState.GS_END;
                 }
-                break;
-            case GameState.GS_END:
-                break;
         }
     }
 
     private onEatApple() {
         this.scoreLabel.string = '' + this.snakeCtrl.getScore();
+    }
+
+    private set curState(value: GameState) {
+        switch (value) {
+            case GameState.GS_INIT:
+                this.init();
+                break;
+            case GameState.GS_PLAYING:
+                if (this.startMenu) {
+                    this.startMenu.active = false;
+                }
+
+                if (this.scoreLabel) {
+                    this.scoreLabel.string = '0';
+                }
+
+                setTimeout(() => {
+                    if (this.snakeCtrl) {
+                        this.snakeCtrl.init();
+                    }
+                }, 0.1);
+                break;
+            case GameState.GS_END:
+                if (this.startMenu) {
+                    this.startMenu.active = true;
+                }
+                this.snakeCtrl.reset();
+                break;
+        }
+        this._curState = value;
+    }
+
+    onStartButtonClicked() {
+        this.curState = GameState.GS_PLAYING;
     }
 }
