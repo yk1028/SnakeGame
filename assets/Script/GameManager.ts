@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Prefab, instantiate, Node, game, Label } from 'cc';
+import { _decorator, Component, Prefab, instantiate, Node, game, Label, Collider, ConeCollider, director, BoxCollider, ColliderComponent } from 'cc';
 import { SnakeController } from './SnakeController';
 const { ccclass, property } = _decorator;
 
@@ -65,7 +65,7 @@ export class GameManager extends Component {
     }
 
     private initApple() {
-        this._apple = instantiate(this.applePrfb);    
+        this._apple = instantiate(this.applePrfb);
         this.locateApple();
         this._apple.parent = this.node;
     }
@@ -88,7 +88,7 @@ export class GameManager extends Component {
                     this.onEatApple();
                 }
 
-                if (this.snakeCtrl.isHitTail() || this.snakeCtrl.isOut(GameManager._MAPSIZE)) {
+                if (this.snakeCtrl.isOut(GameManager._MAPSIZE)) {
                     this._curState = GameState.GS_END;
                     // game.end();
                     console.log("end");

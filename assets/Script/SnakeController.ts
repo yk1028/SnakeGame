@@ -1,4 +1,4 @@
-import { _decorator, Component, Vec3, input, Input, EventKeyboard, KeyCode, Prefab, instantiate, Node } from 'cc';
+import { _decorator, Component, Vec3, input, Input, EventKeyboard, KeyCode, Prefab, instantiate, Node, SphereCollider, Collider, SphereColliderComponent } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -16,7 +16,7 @@ const { ccclass, property } = _decorator;
 @ccclass('SnakeController')
 export class SnakeController extends Component {
 
-    private static _SNAKE_SPEED = 1;
+    private static _SNAKE_SPEED = 3;
     private static _INIT_NUM_OF_TAILS = 2;
 
     private _upDir: Vec3 = new Vec3(0, 1, 0);
@@ -34,7 +34,7 @@ export class SnakeController extends Component {
     public tailPrfb: Prefab | null = null;
 
     canEatApple(apple: Vec3) {
-        return apple.equals(this.getHeadPosition());
+        return Vec3.distance(this.getHeadPosition(), apple) < 1;
     }
 
     addTail() {
@@ -46,21 +46,10 @@ export class SnakeController extends Component {
         this._snakePositions.unshift(new Vec3(tail.getPosition()));
     }
 
-    isHitTail() {
-        let headPos = this._snakePositions[this._snakePositions.length - 1];
-
-        for (let i = 0; i < this._snakePositions.length - 1; i++) {
-            if (headPos.equals(this._snakePositions[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     isOut(mapSize: number) {
         let headPos = this.getHeadPosition();
-        return headPos.x >= mapSize || headPos.x <= mapSize * -1
-            || headPos.y >= mapSize || headPos.y <= mapSize * -1;
+        return headPos.x > mapSize - 1 || headPos.x < mapSize * -1 + 1
+            || headPos.y > mapSize - 1 || headPos.y < mapSize * -1 + 1;
     }
 
     getScore() {
@@ -96,8 +85,18 @@ export class SnakeController extends Component {
         head.setPosition(0, 0, 0);
         head.parent = this.node;
 
+        const collider = head.addComponent(SphereColliderComponent);
+        collider.setGroup(0);
+        collider.setMask(0);
+        collider.on('onCollisionEnter', this.onTrigger, this);
+        console.log(collider);
+
         this._snake.push(head);
         this._snakePositions.push(new Vec3(head.getPosition()));
+    }
+
+    private onTrigger() {
+        console.log("head collision");
     }
 
     private onKeyDown(event: EventKeyboard) {
