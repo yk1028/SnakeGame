@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Prefab, instantiate, Node, game, Label, Collider, ConeCollider, director, BoxCollider, ColliderComponent } from 'cc';
+import { _decorator, Component, Prefab, instantiate, Node, game, Label } from 'cc';
 import { SnakeController } from './SnakeController';
 const { ccclass, property } = _decorator;
 

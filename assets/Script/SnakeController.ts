@@ -1,4 +1,4 @@
-import { _decorator, Component, Vec3, input, Input, EventKeyboard, KeyCode, Prefab, instantiate, Node, SphereCollider, Collider, SphereColliderComponent } from 'cc';
+import { _decorator, Component, Vec3, input, Input, EventKeyboard, KeyCode, Prefab, instantiate, Node } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -85,18 +85,8 @@ export class SnakeController extends Component {
         head.setPosition(0, 0, 0);
         head.parent = this.node;
 
-        const collider = head.addComponent(SphereColliderComponent);
-        collider.setGroup(0);
-        collider.setMask(0);
-        collider.on('onCollisionEnter', this.onTrigger, this);
-        console.log(collider);
-
         this._snake.push(head);
         this._snakePositions.push(new Vec3(head.getPosition()));
-    }
-
-    private onTrigger() {
-        console.log("head collision");
     }
 
     private onKeyDown(event: EventKeyboard) {
