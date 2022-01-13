@@ -19,10 +19,10 @@ export class SnakeController extends Component {
     private static _SNAKE_SPEED = 1;
     private static _INIT_NUM_OF_TAILS = 2;
 
-    private _upDir: Vec3 = new Vec3(0, SnakeController._SNAKE_SPEED, 0);
-    private _downDir: Vec3 = new Vec3(0, -1 * SnakeController._SNAKE_SPEED, 0);
-    private _rightDir: Vec3 = new Vec3(SnakeController._SNAKE_SPEED, 0, 0);
-    private _leftDir: Vec3 = new Vec3(-1 * SnakeController._SNAKE_SPEED, 0, 0);
+    private _upDir: Vec3 = new Vec3(0, 1, 0);
+    private _downDir: Vec3 = new Vec3(0, -1, 0);
+    private _rightDir: Vec3 = new Vec3(1, 0, 0);
+    private _leftDir: Vec3 = new Vec3(-1, 0, 0);
     private _nextDir: Vec3;
 
     private _snake: Node[] = [];
@@ -127,25 +127,42 @@ export class SnakeController extends Component {
 
     update(deltaTime: number) {
 
+        deltaTime *= SnakeController._SNAKE_SPEED;
         this._moveTime += deltaTime;
 
-        if (this._moveTime > SnakeController._SNAKE_SPEED) {
+        let headPos = this.updateHead(deltaTime);
+        this.updateTail();
+
+        if (this._moveTime >= 1) {
             this._moveTime = 0;
-
-            let headPos = this.getHeadPosition();
-
-            Vec3.add(headPos, headPos, this._nextDir);
 
             this._snakePositions.shift();
             this._snakePositions.push(headPos);
+        }
+    }
 
-            for (let i = 0; i < this._snake.length; i++) {
-                this._snake[i].setPosition(new Vec3(this._snakePositions[i]));
-            }
+    private updateHead(deltaTime: number): Vec3 {
+        let headPos = this.getHeadPosition();
+
+        Vec3.add(headPos, headPos, new Vec3(this._nextDir.x * deltaTime, this._nextDir.y * deltaTime, 0));
+
+        this._snake[this._snake.length - 1].setPosition(headPos);
+
+        return headPos;
+    }
+
+    private updateTail() {
+        for (let i = 0; i < this._snake.length - 1; i++) {
+            let prevPos = this._snakePositions[i];
+            let nextPos = this._snakePositions[i + 1];
+
+            let curPos = new Vec3(prevPos.x + ((nextPos.x - prevPos.x) * this._moveTime), prevPos.y + ((nextPos.y - prevPos.y) * this._moveTime), 0);
+
+            this._snake[i].setPosition(curPos);
         }
     }
 
     private getHeadPosition() {
-        return new Vec3(this._snakePositions[this._snakePositions.length - 1]);
+        return new Vec3(this._snake[this._snakePositions.length - 1].getPosition());
     }
 }

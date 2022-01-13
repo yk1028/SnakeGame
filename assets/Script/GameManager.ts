@@ -65,7 +65,7 @@ export class GameManager extends Component {
     }
 
     private initApple() {
-        this._apple = instantiate(this.applePrfb);
+        this._apple = instantiate(this.applePrfb);    
         this.locateApple();
         this._apple.parent = this.node;
     }
@@ -90,7 +90,8 @@ export class GameManager extends Component {
 
                 if (this.snakeCtrl.isHitTail() || this.snakeCtrl.isOut(GameManager._MAPSIZE)) {
                     this._curState = GameState.GS_END;
-                    game.end();
+                    // game.end();
+                    console.log("end");
                 }
                 break;
             case GameState.GS_END:
