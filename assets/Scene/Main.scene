@@ -328,6 +328,9 @@
     "startMenu": {
       "__id__": 14
     },
+    "camera": {
+      "__id__": 6
+    },
     "_id": "d7r63ZnWFP0rRCn++zj7jb"
   },
   {
@@ -388,8 +391,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -400,
-      "y": 250,
+      "x": -350,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -1092,7 +1095,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 238.34,
+      "width": 341.87,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -1122,7 +1125,7 @@
       "b": 0,
       "a": 255
     },
-    "_string": "조작법 :  ← ↑ ↓ →",
+    "_string": "Move the snake by touch!",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 30,
@@ -1217,7 +1220,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 539.9203187250996,
+    "_orthoHeight": 320,
     "_near": 1,
     "_far": 2000,
     "_color": {

@@ -1,5 +1,4 @@
-
-import { _decorator, Component, Prefab, instantiate, Node, game, Label } from 'cc';
+import { _decorator, Component, Camera, Prefab, instantiate, Node, input, Input, Label, EventTouch, Vec3 } from 'cc';
 import { SnakeController } from './SnakeController';
 const { ccclass, property } = _decorator;
 
@@ -46,6 +45,10 @@ export class GameManager extends Component {
     @property({ type: Node })
     public startMenu: Node = null;
 
+    // 3D camera reference
+    @property(Camera)
+    camera: Camera = null!;
+
     start() {
         this.curState = GameState.GS_INIT;
     }
@@ -61,6 +64,16 @@ export class GameManager extends Component {
         if (this.scoreLabel) {
             this.scoreLabel.string = '0';
         }
+    }
+
+    private onTouchStart(event: EventTouch) {
+        const camera = this.camera.camera;
+        const pos = new Vec3();
+        const location = event.getLocation();
+        const screenPos = new Vec3(location.x, location.y, 0.03);
+        camera.screenToWorld(pos, screenPos);
+
+        this.snakeCtrl.moveTo(pos);
     }
 
     private initFence() {
@@ -130,12 +143,15 @@ export class GameManager extends Component {
                         this.snakeCtrl.init();
                     }
                 }, 0.1);
+
+                input.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
                 break;
             case GameState.GS_END:
                 if (this.startMenu) {
                     this.startMenu.active = true;
                 }
                 this.snakeCtrl.reset();
+                input.off(Input.EventType.TOUCH_START, this.onTouchStart, this);
                 break;
         }
         this._curState = value;

@@ -1,4 +1,4 @@
-import { _decorator, Component, Vec3, input, Input, EventKeyboard, KeyCode, Prefab, instantiate, Node } from 'cc';
+import { _decorator, Component, Vec3, Prefab, instantiate, Node } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -65,8 +65,6 @@ export class SnakeController extends Component {
         this._nextDir = this._rightDir;
 
         this.initSnake();
-
-        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
     private initSnake() {
@@ -94,29 +92,16 @@ export class SnakeController extends Component {
         this._snakePositions.push(new Vec3(head.getPosition()));
     }
 
-    private onKeyDown(event: EventKeyboard) {
-        switch (event.keyCode) {
-            case KeyCode.ARROW_UP:
-                if (this._nextDir != this._downDir) {
-                    this._nextDir = this._upDir;
-                }
-                break;
-            case KeyCode.ARROW_DOWN:
-                if (this._nextDir != this._upDir) {
-                    this._nextDir = this._downDir;
-                }
-                break;
-            case KeyCode.ARROW_LEFT:
-                if (this._nextDir != this._rightDir) {
-                    this._nextDir = this._leftDir;
-                }
-                break;
-            case KeyCode.ARROW_RIGHT:
-                if (this._nextDir != this._leftDir) {
-                    this._nextDir = this._rightDir;
-                }
-                break;
-        }
+    moveTo(targetPos: Vec3) {
+        const headPos = this.getHeadPosition();
+        const distance = Vec3.distance(targetPos, headPos);
+
+        let newX = (targetPos.x - headPos.x) / distance;
+        let newY = (targetPos.y - headPos.y) / distance;
+
+        let v = new Vec3(newX, newY, 0);
+
+        this._nextDir = v;
     }
 
     update(deltaTime: number) {
@@ -170,6 +155,5 @@ export class SnakeController extends Component {
         this._snake = [];
         this._snakePositions = [];
         this._isActive = false;
-        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 }
