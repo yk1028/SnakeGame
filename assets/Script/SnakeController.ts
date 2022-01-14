@@ -19,10 +19,7 @@ export class SnakeController extends Component {
     private static _SNAKE_SPEED = 3;
     private static _INIT_NUM_OF_TAILS = 2;
 
-    private _upDir: Vec3 = new Vec3(0, 1, 0);
-    private _downDir: Vec3 = new Vec3(0, -1, 0);
-    private _rightDir: Vec3 = new Vec3(1, 0, 0);
-    private _leftDir: Vec3 = new Vec3(-1, 0, 0);
+    private _initDir: Vec3 = new Vec3(1, 0, 0);
     private _nextDir: Vec3;
 
     private _snake: Node[] = [];
@@ -33,7 +30,7 @@ export class SnakeController extends Component {
     private _isActive = false;
 
     @property({ type: Prefab })
-    public tailPrfb: Prefab | null = null;
+    public tailPrfb: Prefab = null!;
 
     canEatApple(apple: Vec3) {
         return Vec3.distance(this.getHeadPosition(), apple) < 1;
@@ -62,7 +59,7 @@ export class SnakeController extends Component {
 
     init() {
         this._isActive = true;
-        this._nextDir = this._rightDir;
+        this._nextDir = this._initDir;
 
         this.initSnake();
     }
@@ -89,19 +86,17 @@ export class SnakeController extends Component {
         head.parent = this.node;
 
         this._snake.push(head);
-        this._snakePositions.push(new Vec3(head.getPosition()));
+        this._snakePositions.push(head.getPosition());
     }
 
     moveTo(targetPos: Vec3) {
         const headPos = this.getHeadPosition();
         const distance = Vec3.distance(targetPos, headPos);
 
-        let newX = (targetPos.x - headPos.x) / distance;
-        let newY = (targetPos.y - headPos.y) / distance;
+        const newX = (targetPos.x - headPos.x) / distance;
+        const newY = (targetPos.y - headPos.y) / distance;
 
-        let v = new Vec3(newX, newY, 0);
-
-        this._nextDir = v;
+        this._nextDir = new Vec3(newX, newY, 0);
     }
 
     update(deltaTime: number) {
@@ -145,7 +140,7 @@ export class SnakeController extends Component {
     }
 
     private getHeadPosition() {
-        return new Vec3(this._snake[this._snakePositions.length - 1].getPosition());
+        return new Vec3(this._snake[this._snake.length - 1].getPosition());
     }
 
     reset() {

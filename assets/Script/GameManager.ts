@@ -31,23 +31,22 @@ export class GameManager extends Component {
     private _curState: GameState = GameState.GS_INIT;
 
     @property({ type: Prefab })
-    public applePrfb: Prefab | null = null;
+    public applePrfb: Prefab = null!;
 
     @property({ type: Prefab })
-    public fencePrfb: Prefab | null = null;
+    public fencePrfb: Prefab = null!;
 
     @property({ type: SnakeController })
-    public snakeCtrl: SnakeController = null;
+    public snakeCtrl: SnakeController = null!;
 
     @property({ type: Label })
-    public scoreLabel: Label | null = null;
+    public scoreLabel: Label = null!;
 
     @property({ type: Node })
-    public startMenu: Node = null;
+    public startMenu: Node = null!;
 
-    // 3D camera reference
     @property(Camera)
-    camera: Camera = null!;
+    public camera: Camera = null!;
 
     start() {
         this.curState = GameState.GS_INIT;
