@@ -1,4 +1,6 @@
 # SnakeGame
+## 2. Unity2D (2022.01.17 ~ )
+
 ## 1. Cocos Creator (2022.01.10 ~ 2022.01.14)
 ### 개발 환경
 - windows 10
