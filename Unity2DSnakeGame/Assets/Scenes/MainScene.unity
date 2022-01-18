@@ -250,3 +250,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   headPrefab: {fileID: 3738005375282055723, guid: d94a404dca83dd04db2b3151d8523707, type: 3}
+  tailPrefab: {fileID: 1252197521566878769, guid: a26ce463513e2384fa5aaf8a83f31d1b, type: 3}
