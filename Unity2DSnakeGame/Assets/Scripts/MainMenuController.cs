@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainMenuController : MonoBehaviour
 {
-    public GameObject gameMenu;
+    public GameObject mainMenu;
 
     public void playGame()
     {
@@ -13,6 +13,6 @@ public class MainMenuController : MonoBehaviour
 
     public void SetActive(bool isActive)
     {
-        gameMenu.SetActive(isActive);
+        mainMenu.SetActive(isActive);
     }
 }

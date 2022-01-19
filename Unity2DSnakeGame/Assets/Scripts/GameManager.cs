@@ -7,15 +7,6 @@ public class GameManager : MonoBehaviour
     private static readonly float MAP_WIDTH = 16.0f;
     private static readonly float MAP_HEIGHT = 7.0f;
 
-    public GameObject snake;
-    public GameObject apple;
-    public GameObject mainMenu;
-
-    private SnakeController snakeCtrl;
-    private AppleController appleCtrl;
-
-    public bool isActive = false;
-
     private static GameManager instance = null;
 
     public static GameManager Instance
@@ -25,6 +16,13 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
+
+    public GameObject snake;
+    public GameObject apple;
+    public GameObject mainMenu;
+
+    private SnakeController snakeCtrl;
+    private AppleController appleCtrl;
 
     void Awake()
     {
@@ -48,12 +46,12 @@ public class GameManager : MonoBehaviour
         appleCtrl.Init(MAP_WIDTH, MAP_HEIGHT);
 
         mainMenu.SetActive(false);
-        isActive = true;
+        enabled = true;
     }
 
     void Update()
     {
-        if (isActive)
+        if (snakeCtrl != null)
         {
             snakeCtrl.UpdateSnake();
         }
@@ -68,7 +66,7 @@ public class GameManager : MonoBehaviour
     public void Reset()
     {
         mainMenu.SetActive(true);
-        isActive = false;
+        enabled = false;
 
         snakeCtrl.Reset();
         appleCtrl.Reset();
