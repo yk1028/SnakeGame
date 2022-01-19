@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static readonly float MAP_WIDTH = 5.0f;
-    private static readonly float MAP_HEIGHT = 4.0f;
+    private static readonly float MAP_WIDTH = 16.0f;
+    private static readonly float MAP_HEIGHT = 7.0f;
 
     public GameObject snake;
     public GameObject apple;
