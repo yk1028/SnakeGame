@@ -9,9 +9,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject snake;
     public GameObject apple;
+    public GameObject mainMenu;
 
     private SnakeController snakeCtrl;
     private AppleController appleCtrl;
+
+    public bool isActive = false;
 
     private static GameManager instance = null;
 
@@ -36,23 +39,38 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    void Start()
+    public void Init()
     {
         snakeCtrl = snake.GetComponent<SnakeController>();
         appleCtrl = apple.GetComponent<AppleController>();
 
         snakeCtrl.Init();
         appleCtrl.Init(MAP_WIDTH, MAP_HEIGHT);
+
+        mainMenu.SetActive(false);
+        isActive = true;
     }
 
     void Update()
     {
-        snakeCtrl.UpdateSnake();
+        if (isActive)
+        {
+            snakeCtrl.UpdateSnake();
+        }
     }
 
     public void EatApple()
     {
         snakeCtrl.AddTails(1);
         appleCtrl.LocateApple();
+    }
+
+    public void Reset()
+    {
+        mainMenu.SetActive(true);
+        isActive = false;
+
+        snakeCtrl.Reset();
+        appleCtrl.Reset();
     }
 }

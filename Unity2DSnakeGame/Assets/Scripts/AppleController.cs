@@ -30,4 +30,9 @@ public class AppleController : MonoBehaviour
         var positionBound = bound - 1;
         return Mathf.Floor(Random.value * positionBound * 2 + 1) - positionBound;
     }
+
+    public void Reset()
+    {
+        Destroy(apple);
+    }
 }

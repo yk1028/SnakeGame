@@ -106,4 +106,14 @@ public class SnakeController : MonoBehaviour
             prev = cur;
         }
     }
+
+    public void Reset()
+    {
+        Destroy(head);
+        foreach(var tail in tails) 
+        {
+            Destroy(tail);
+        }
+        this.tails = null;
+    }
 }
