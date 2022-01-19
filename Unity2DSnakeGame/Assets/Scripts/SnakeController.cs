@@ -79,6 +79,16 @@ public class SnakeController : MonoBehaviour
         var degree = Mathf.Rad2Deg * radian;
 
         head.transform.rotation = Quaternion.Euler(0, 0, degree);
+
+        KeepHeadUp(degree);
+    }
+
+    private void KeepHeadUp(float degree)
+    {
+        var rigid = head.GetComponent<Rigidbody2D>();
+        var renderer = rigid.GetComponent<SpriteRenderer>();
+
+        renderer.flipY = degree <= -90 || degree > 90;
     }
 
     private void UpdateHead()
@@ -110,7 +120,7 @@ public class SnakeController : MonoBehaviour
     public void Reset()
     {
         Destroy(head);
-        foreach(var tail in tails) 
+        foreach (var tail in tails)
         {
             Destroy(tail);
         }
