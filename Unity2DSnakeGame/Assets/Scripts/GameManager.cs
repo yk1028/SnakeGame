@@ -50,8 +50,9 @@ public class GameManager : MonoBehaviour
         snakeCtrl.UpdateSnake();
     }
 
-    public void LocateApple()
+    public void EatApple()
     {
+        snakeCtrl.AddTails(1);
         appleCtrl.LocateApple();
     }
 }

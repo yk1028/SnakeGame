@@ -6,6 +6,6 @@ public class AppleTrigger : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D other)
     {
-        GameManager.Instance.LocateApple();
+        GameManager.Instance.EatApple();
     }
 }

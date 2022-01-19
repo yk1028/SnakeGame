@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SnakeController : MonoBehaviour
 {
-    private static readonly float SPEED = 3.0f;
-    private static readonly int INIT_NUM_OF_TAILS = 5;
+    private static readonly float SPEED = 5.0f;
+    private static readonly int INIT_NUM_OF_TAILS = 2;
     private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
 
     public GameObject headPrefab;
@@ -23,12 +23,25 @@ public class SnakeController : MonoBehaviour
 
         for (int i = 1; i <= INIT_NUM_OF_TAILS; i++)
         {
-            var tail = Instantiate(tailPrefab, new Vector3(-1 * i, 0, 0), Quaternion.identity, head.transform);
-
-            tail.GetComponent<Renderer>().sortingOrder = -1 * i;
-            tails.AddLast(tail);
+            AddTail(-1 * i, 0, -1 * i);
         }
+    }
+    public void AddTails(int count)
+    {
+        var lastTail = this.tails.Last.Value;
 
+        for (int i = 1; i <= count; i++)
+        {
+            this.AddTail(lastTail.transform.position.x, lastTail.transform.position.y, -1 * (this.tails.Count + i));
+        }
+    }
+
+    private void AddTail(float initX, float initY, int renderOrder)
+    {
+        var tail = Instantiate(tailPrefab, new Vector3(initX, initY, 0), Quaternion.identity, head.transform);
+
+        tail.GetComponent<Renderer>().sortingOrder = renderOrder;
+        tails.AddLast(tail);
         head.transform.DetachChildren();
     }
 
