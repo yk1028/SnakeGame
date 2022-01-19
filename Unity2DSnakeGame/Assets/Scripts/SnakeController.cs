@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SnakeController : MonoBehaviour
 {
-    private static float SPEED = 5.0f;
-    private static int INIT_NUM_OF_TAILS = 10;
-    private static Vector2 INIT_DIRECTION = new Vector2(1,0);
+    private static readonly float SPEED = 3.0f;
+    private static readonly int INIT_NUM_OF_TAILS = 5;
+    private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
 
     public GameObject headPrefab;
     public GameObject tailPrefab;
@@ -15,7 +15,7 @@ public class SnakeController : MonoBehaviour
     private Vector2 headDirection;
     private LinkedList<GameObject> tails;
 
-    void Start()
+    public void Init()
     {
         head = Instantiate(headPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         headDirection = INIT_DIRECTION;
@@ -23,23 +23,22 @@ public class SnakeController : MonoBehaviour
 
         for (int i = 1; i <= INIT_NUM_OF_TAILS; i++)
         {
-            var tail = Instantiate(tailPrefab, new Vector3(-1 * i , 0, 0), Quaternion.identity, head.transform);
+            var tail = Instantiate(tailPrefab, new Vector3(-1 * i, 0, 0), Quaternion.identity, head.transform);
 
             tail.GetComponent<Renderer>().sortingOrder = -1 * i;
             tails.AddLast(tail);
         }
 
         head.transform.DetachChildren();
-
     }
 
-    void Update()
+    public void UpdateSnake()
     {
         ChangeOfHeadDirectionByTouch();
         UpdateHead();
         UpdateTails();
     }
-    
+
     private void ChangeOfHeadDirectionByTouch()
     {
         if (Input.GetMouseButtonDown(0))
@@ -58,10 +57,10 @@ public class SnakeController : MonoBehaviour
         headDirection.x = (targetPos.x - head.transform.position.x) / distanceToTarget;
         headDirection.y = (targetPos.y - head.transform.position.y) / distanceToTarget;
 
-        rotateHead();
+        RotateHead();
     }
 
-    private void rotateHead()
+    private void RotateHead()
     {
         var radian = Mathf.Atan2(headDirection.y, headDirection.x);
         var degree = Mathf.Rad2Deg * radian;
@@ -81,7 +80,7 @@ public class SnakeController : MonoBehaviour
     {
         var prev = head;
 
-        foreach(var cur in tails)
+        foreach (var cur in tails)
         {
             var distance = Vector2.Distance(prev.transform.position, cur.transform.position);
             var x = (prev.transform.position.x - cur.transform.position.x) / distance;

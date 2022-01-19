@@ -7,14 +7,20 @@ public class AppleController : MonoBehaviour
     public GameObject applePrefab;
 
     private GameObject apple;
+    private float widthBound;
+    private float heightBound;
 
-    public void Start()
+    public void Init(float widthBound, float heightBound)
     {
-        apple = Instantiate(applePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        locateApple(10, 7);
+        this.apple = Instantiate(applePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        this.widthBound = widthBound;
+        this.heightBound = heightBound;
+
+        LocateApple();
+        apple.AddComponent<AppleTrigger>();
     }
-    
-    public void locateApple(float widthBound, float heightBound)
+
+    public void LocateApple()
     {
         apple.transform.position = new Vector2(GenerateRandom(widthBound), GenerateRandom(heightBound));
     }
@@ -22,6 +28,6 @@ public class AppleController : MonoBehaviour
     private float GenerateRandom(float bound)
     {
         var positionBound = bound - 1;
-        return Mathf.Floor(Random.value * positionBound *2 + 1) - positionBound;
+        return Mathf.Floor(Random.value * positionBound * 2 + 1) - positionBound;
     }
 }
