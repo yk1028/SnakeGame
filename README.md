@@ -1,11 +1,16 @@
 # SnakeGame
-## 2. Unity2D (2022.01.17 ~ )
+## 2. Unity2D (2022.01.17 ~ 2022.01.21)
 ### 개발 환경
 - Windows 10
 - Unity 2020.3.26f1
 
 ### 사용 언어
 - C#
+
+### 테스트 환경
+- PC (Windows 10)
+- X4 (Android 9)
+- iPhone 13 (iOS 15.0)
 
 ### 개발 순서
 1. [x] Snake 구현
@@ -24,6 +29,32 @@
 6. [x] Snake 머리 방향 좌우에 맞게 조정
 7. [x] GameObject 재사용 가능하게 수정
 
+### 고민했던 점
+- **GameObject Component 추가**
+  - 초기 생각 : GameObject, Component를 editor에서 생성한 것과 script에서 생성한 것에 대한 구분이 모호했다.
+  - 문제점 : script에서 GameObject와 Component들을 활용할 때 햇갈리고 중복되는 코드들이 많았다.
+  - 해결 : 전체 클래스 구조를 그려보면서 editor에서 생성한 것과 script에서 생성한 것의 구분을 명확히 했다. visualize가 잘 되어있는 editor활용시 editor에서 생성된 객체가 script에서 생성한 객체의 차이를 명확히 해야겠다.
+- **Tirgger Callback Method 추가**
+  - 초기 생각 : 당연히 같은 Tirgger Callback Method(ex. OnTriggerEnter2D())는 하나만 등록된다고 생각했다.
+  - 문제점 : Trigger Callback Method 추가 방식이 OnTriggerEnter2D()가 작성된 AppleTrigger(MonoBehaviour)클래스 자체를 Component로 추가했기 때문에 재시작할때마다 Callback Method가 추가로 등록되었다. 코드의 구조에 문제점이 있긴 했지만 선입견 때문에 문제점을 찾기 어려웠다.
+  - 해결 : 한번만 추가되도록 수정했다. 메서드 단위가 아니라 GameObject와 Component의 관계를 잘 생각해야겠다.
+- **GameObject 재사용**
+  - 초기 생각 : 재시작 할때마다 모든 Object 생성 후 종료시 Destory메서드를 활용하여 제거했다.
+  - 문제점 : 간단한 게임이었기 때문에 문제는 없었지만 재사용 가능한 GameOject의 경우 재사용하는것이 좋다고 생각했다.
+  - 해결 : GameObject pool을 만들고 Active 상태를 변경하는 방식으로 수정했다.
+- **이동하는 이미지**
+  - 초기 생각 : Cocos에서 개발할때 Snake의 머리의 상하좌우 구분이 없었기 때문에 머리이미지의 회전이나 반전을 개발전에 고려하지 않았다.
+  - 문제점 : 방향 전환에 따른 머리 이미지의 회전, 반전이 필요했다. 구현시에 회전 각도를 0 ~ 360으로 생각했는데 -180 ~ 180이었다.([Quaternion과 Euler angle](https://killu.tistory.com/12))
+  - 해결 : 이동 방향에 대한 백터 정보는 이미 있었기 때문에 계산을 통해 각도를 구하고 각도를 바탕으로 이미지를 회전, 반전시켰다.
+
+### 다음 개발에서 생각해볼 부분
+- 개발 초기에 간단하게 빌드를 해보고 개발
+- 디바이스마다의 차이 생각해보면서 개발
+- Snake와 Apple 재사용 가능하도록 수정
+- Unity가 멀티플레이 지원방식이 HLAPI -> Netcode로 바뀐 이유
+- git branch 나눠서 작업
+- Unity test 방식 찾아보기
+  
 ****
 ## 1. Cocos Creator (2022.01.10 ~ 2022.01.14)
 ### 개발 환경
