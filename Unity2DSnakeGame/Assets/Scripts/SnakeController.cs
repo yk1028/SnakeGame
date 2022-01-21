@@ -111,7 +111,12 @@ public class SnakeController : MonoBehaviour
         var rigid = head.GetComponent<Rigidbody2D>();
         var renderer = rigid.GetComponent<SpriteRenderer>();
 
-        renderer.flipY = degree <= -90 || degree > 90;
+        renderer.flipY = IsLeft(degree);
+    }
+
+    private bool IsLeft(float degree)
+    {
+        return degree <= -90 || degree > 90;
     }
 
     private void UpdateHead()

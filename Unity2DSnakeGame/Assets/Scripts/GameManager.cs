@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     private static readonly float MAP_WIDTH = 16.0f;
     private static readonly float MAP_HEIGHT = 7.0f;
+    private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
 
     private static GameManager instance = null;
 
@@ -17,8 +18,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GameObject snake;
-    public GameObject apple;
     public GameObject mainMenu;
 
     private SnakeController snakeCtrl;
@@ -36,9 +35,8 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
-        snakeCtrl = snake.GetComponent<SnakeController>();
-        appleCtrl = apple.GetComponent<AppleController>();
-
+        snakeCtrl = this.GetComponent<SnakeController>();
+        appleCtrl = this.GetComponent<AppleController>();
     }
 
     public void Init()
@@ -52,15 +50,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (snakeCtrl != null)
-        {
-            snakeCtrl.UpdateSnake();
-        }
+        snakeCtrl.UpdateSnake();
     }
 
     public void EatApple()
     {
-        snakeCtrl.AddTails(1);
+        snakeCtrl.AddTails(NUM_OF_ADDITIONAL_TAILS);
         appleCtrl.LocateApple();
     }
 
