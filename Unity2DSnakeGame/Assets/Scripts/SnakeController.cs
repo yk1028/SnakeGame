@@ -7,6 +7,7 @@ public class SnakeController : MonoBehaviour
     private static readonly float SPEED = 5.0f;
     private static readonly int INIT_NUM_OF_TAILS = 2;
     private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
+    private static readonly Vector3 INIT_POSITION = new Vector3(0, 0, 0);
 
     public GameObject headPrefab;
     public GameObject tailPrefab;
@@ -15,44 +16,66 @@ public class SnakeController : MonoBehaviour
     private Vector2 headDirection;
     private LinkedList<GameObject> tails;
 
+    private List<GameObject> tailPool;
+
+    void Start()
+    {
+        head = Instantiate(headPrefab, INIT_POSITION, Quaternion.identity);
+        head.SetActive(false);
+
+        tails = new LinkedList<GameObject>();
+        tailPool = new List<GameObject>();
+    }
+
     public void Init()
     {
-        head = Instantiate(headPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        head.transform.position = INIT_POSITION;
+        head.SetActive(true);
         headDirection = INIT_DIRECTION;
-        tails = new LinkedList<GameObject>();
 
-        for (int i = 1; i <= INIT_NUM_OF_TAILS; i++)
-        {
-            AddTail(-1 * i, 0, -1 * i);
-        }
+        AddTails(INIT_NUM_OF_TAILS);
     }
+
     public void AddTails(int count)
     {
-        var lastTail = this.tails.Last.Value;
+        GameObject lastTail = this.tails.Count == 0 ? this.head : this.tails.Last.Value;
 
         for (int i = 1; i <= count; i++)
         {
-            this.AddTail(lastTail.transform.position.x, lastTail.transform.position.y, -1 * (this.tails.Count + i));
+            var tail = GetTailFromPool();
+            tail.transform.position = new Vector3(lastTail.transform.position.x, lastTail.transform.position.y, 0);
+            tail.GetComponent<Renderer>().sortingOrder = -1 * (this.tails.Count + i);
+            tails.AddLast(tail);
         }
+
+        head.transform.DetachChildren();
     }
 
-    private void AddTail(float initX, float initY, int renderOrder)
+    private GameObject GetTailFromPool()
     {
-        var tail = Instantiate(tailPrefab, new Vector3(initX, initY, 0), Quaternion.identity, head.transform);
+        foreach (var tail in tailPool)
+        {
+            if (!tail.activeSelf)
+            {
+                tail.SetActive(true);
+                return tail;
+            }
+        }
 
-        tail.GetComponent<Renderer>().sortingOrder = renderOrder;
-        tails.AddLast(tail);
-        head.transform.DetachChildren();
+        var newTail = Instantiate(tailPrefab, head.transform);
+        tailPool.Add(newTail);
+
+        return newTail;
     }
 
     public void UpdateSnake()
     {
-        ChangeOfHeadDirectionByTouch();
+        ChangeHeadDirectionByTouch();
         UpdateHead();
         UpdateTails();
     }
 
-    private void ChangeOfHeadDirectionByTouch()
+    private void ChangeHeadDirectionByTouch()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -119,11 +142,12 @@ public class SnakeController : MonoBehaviour
 
     public void Reset()
     {
-        Destroy(head);
+        head.SetActive(false);
+
         foreach (var tail in tails)
         {
-            Destroy(tail);
+            tail.SetActive(false);
         }
-        this.tails = null;
+        this.tails.Clear();
     }
 }

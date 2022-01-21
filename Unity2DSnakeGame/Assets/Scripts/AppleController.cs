@@ -10,14 +10,20 @@ public class AppleController : MonoBehaviour
     private float widthBound;
     private float heightBound;
 
-    public void Init(float widthBound, float heightBound)
+    void Start()
     {
         this.apple = Instantiate(applePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        this.apple.SetActive(false);
+        this.apple.AddComponent<AppleTrigger>();
+    }
+
+    public void Init(float widthBound, float heightBound)
+    {
+        this.apple.SetActive(true);
         this.widthBound = widthBound;
         this.heightBound = heightBound;
 
         LocateApple();
-        apple.AddComponent<AppleTrigger>();
     }
 
     public void LocateApple()
@@ -33,6 +39,6 @@ public class AppleController : MonoBehaviour
 
     public void Reset()
     {
-        Destroy(apple);
+        apple.SetActive(false);
     }
 }

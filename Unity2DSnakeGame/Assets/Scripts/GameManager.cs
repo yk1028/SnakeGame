@@ -35,13 +35,14 @@ public class GameManager : MonoBehaviour
         instance = this;
 
         DontDestroyOnLoad(this.gameObject);
+
+        snakeCtrl = snake.GetComponent<SnakeController>();
+        appleCtrl = apple.GetComponent<AppleController>();
+
     }
 
     public void Init()
     {
-        snakeCtrl = snake.GetComponent<SnakeController>();
-        appleCtrl = apple.GetComponent<AppleController>();
-
         snakeCtrl.Init();
         appleCtrl.Init(MAP_WIDTH, MAP_HEIGHT);
 
