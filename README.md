@@ -54,6 +54,7 @@
 - Unity가 멀티플레이 지원방식이 HLAPI -> Netcode로 바뀐 이유
 - git branch 나눠서 작업
 - Unity test 방식 찾아보기
+- .gitignore 프로젝트마다 적용하기
   
 ****
 ## 1. Cocos Creator (2022.01.10 ~ 2022.01.14)
