@@ -84,17 +84,23 @@ public class SnakeController : NetworkBehaviour
         var radian = Mathf.Atan2(headDirection.y, headDirection.x);
         var degree = Mathf.Rad2Deg * radian;
 
-        transform.rotation = Quaternion.Euler(0, 0, degree);
-
         KeepHeadUp(degree);
+
+        transform.rotation = Quaternion.Euler(0, 0, degree);
     }
 
     private void KeepHeadUp(float degree)
     {
-        var rigid = GetComponent<Rigidbody2D>();
-        var renderer = rigid.GetComponent<SpriteRenderer>();
+        if (IsDirectionChanged(degree))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * -1f, transform.localScale.z);
+        }
+    }
 
-        renderer.flipY = IsLeft(degree);
+    private bool IsDirectionChanged(float degree)
+    {
+        return (IsLeft(degree) && transform.localScale.y >= 0)
+            || (!IsLeft(degree) && transform.localScale.y < 0);
     }
 
     private bool IsLeft(float degree)
@@ -139,7 +145,6 @@ public class SnakeController : NetworkBehaviour
         }
     }
 
-   
     public void Reset()
     {
         CmdReset();

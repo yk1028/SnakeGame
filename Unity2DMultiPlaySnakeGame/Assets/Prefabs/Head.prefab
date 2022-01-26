@@ -159,10 +159,10 @@ MonoBehaviour:
   sendInterval: 0.05
   syncPosition: 1
   syncRotation: 1
-  syncScale: 0
+  syncScale: 1
   interpolatePosition: 1
   interpolateRotation: 1
-  interpolateScale: 0
+  interpolateScale: 1
   bufferTimeMultiplier: 1
   bufferSizeLimit: 64
   catchupThreshold: 4
@@ -189,5 +189,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  headPrefab: {fileID: 0}
   tailPrefab: {fileID: 1252197521566878769, guid: a26ce463513e2384fa5aaf8a83f31d1b, type: 3}
