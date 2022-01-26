@@ -11,6 +11,8 @@ public class SnakeController : NetworkBehaviour
     private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
     private static readonly Vector3 INIT_POSITION = new Vector3(0, 0, 0);
 
+    private static readonly Quaternion INIT_ROTATION = new Quaternion(0, 0, 0, 0);
+
     public GameObject tailPrefab;
 
     private Vector2 headDirection;
@@ -26,6 +28,12 @@ public class SnakeController : NetworkBehaviour
     {
         transform.position = INIT_POSITION;
         headDirection = INIT_DIRECTION;
+        transform.localRotation = INIT_ROTATION;
+
+        if (transform.localScale.y < 0)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * -1f, transform.localScale.z);
+        }
 
         AddTails(INIT_NUM_OF_TAILS);
     }
@@ -44,12 +52,12 @@ public class SnakeController : NetworkBehaviour
             tails.Add(tail);
 
             NetworkServer.Spawn(tail, this.gameObject);
-          
+
             transform.DetachChildren();
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (!isLocalPlayer) { return; }
 
@@ -139,7 +147,8 @@ public class SnakeController : NetworkBehaviour
         if (other.tag == "Apple")
         {
             AddTails(NUM_OF_ADDITIONAL_TAILS);
-        } else
+        }
+        else
         {
             Reset();
         }

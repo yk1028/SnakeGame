@@ -129,7 +129,7 @@ MonoBehaviour:
   catchupMultiplier: 0.1
   onlySyncOnChange: 1
   bufferResetMultiplier: 5
-  positionSensitivity: 0.01
+  positionSensitivity: 0.0001
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
   showGizmos: 0

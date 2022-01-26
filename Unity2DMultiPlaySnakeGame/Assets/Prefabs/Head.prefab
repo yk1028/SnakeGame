@@ -169,9 +169,9 @@ MonoBehaviour:
   catchupMultiplier: 0.1
   onlySyncOnChange: 1
   bufferResetMultiplier: 5
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
+  positionSensitivity: 0.001
+  rotationSensitivity: 0.001
+  scaleSensitivity: 0.001
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
