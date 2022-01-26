@@ -1,4 +1,10 @@
 # SnakeGame
+## 3. Multiplay with Unity(2022.01.24 ~ )
+
+### 개발 순서
+1. [ ] Mirror
+
+
 ## 2. Unity2D (2022.01.17 ~ 2022.01.21)
 ### 개발 환경
 - Windows 10
