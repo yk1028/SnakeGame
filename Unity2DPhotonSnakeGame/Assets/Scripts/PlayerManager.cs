@@ -188,6 +188,13 @@ namespace Com.Yk1028.SnakeGame
             {
                 AddTails(NUM_OF_ADDITIONAL_TAILS);
             }
+            else
+            {
+                PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
+                PhotonNetwork.Destroy(LocalPlayerInstance);
+
+                GameManager.Instance.LeaveRoom();
+            } 
         }
     }
 }

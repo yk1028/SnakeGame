@@ -22,6 +22,8 @@ namespace Com.Yk1028.SnakeGame
 
         public GameObject applePrefab;
 
+        public static GameManager Instance;
+
         #endregion
 
 
@@ -43,6 +45,8 @@ namespace Com.Yk1028.SnakeGame
 
         public void Start()
         {
+            Instance = this;
+
             if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(3, 3, 0), Quaternion.identity);
