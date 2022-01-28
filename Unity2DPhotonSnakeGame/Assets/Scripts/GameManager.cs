@@ -53,10 +53,7 @@ namespace Com.Yk1028.SnakeGame
 
             gameEndMenu.SetActive(false);
 
-            if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(3, 3, 0), Quaternion.identity);
-            }
+            CreateApple();
 
             if (playerPrefab == null)
             {
@@ -96,6 +93,18 @@ namespace Com.Yk1028.SnakeGame
             }
             Debug.LogFormat("PhotonNetwork : Loading...");
             PhotonNetwork.LoadLevel("Main Room");
+        }
+
+        public void CreateApple()
+        {
+            if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(GenerateRandom(15), GenerateRandom(6), 0), Quaternion.identity);
+            }
+        }
+        private float GenerateRandom(float bound)
+        {
+            return Mathf.Floor(UnityEngine.Random.value * bound * 2 + 1) - bound;
         }
 
         public void Win()

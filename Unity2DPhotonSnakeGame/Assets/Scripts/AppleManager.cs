@@ -12,8 +12,8 @@ namespace Com.Yk1028.SnakeGame
 
     public class AppleManager : MonoBehaviourPunCallbacks
     {
-        private static readonly float MAP_WIDTH = 15.0f;
-        private static readonly float MAP_HEIGHT = 6.0f;
+        private static readonly float MAP_WIDTH = 16.0f;
+        private static readonly float MAP_HEIGHT = 7.0f;
 
         public static GameObject LocalAppleInstance;
 
@@ -39,7 +39,9 @@ namespace Com.Yk1028.SnakeGame
 
         private float GenerateRandom(float bound)
         {
-            return Mathf.Floor(UnityEngine.Random.value * bound * 2 + 1) - bound;
+            var positionBound = bound - 1;
+            return Mathf.Floor(UnityEngine.Random.value * positionBound * 2 + 1) - positionBound;
         }
+
     }
 }
