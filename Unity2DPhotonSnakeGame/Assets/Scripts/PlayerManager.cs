@@ -19,8 +19,7 @@ namespace Com.Yk1028.SnakeGame
         private static readonly int INIT_NUM_OF_TAILS = 2;
         private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
         private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
-        private static readonly Vector3 INIT_POSITION = new Vector3(0, 0, 0);
-        private static readonly Quaternion INIT_ROTATION = new Quaternion(0, 0, 0, 0);
+        private static readonly Vector3 INIT_SCALE = new Vector3(0.05f, 0.05f, 1);
 
         private Vector2 headDirection;
         private List<GameObject> tails;
@@ -53,6 +52,8 @@ namespace Com.Yk1028.SnakeGame
 
         public void Awake()
         {
+            this.tailPrefab.transform.localScale = INIT_SCALE;
+
             // #Important
             // used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
             if (photonView.IsMine)
@@ -91,7 +92,6 @@ namespace Com.Yk1028.SnakeGame
             for (int i = 1; i <= count; i++)
             {
                 var tail = PhotonNetwork.Instantiate(this.tailPrefab.name, new Vector3(lastPosition.x, lastPosition.y, 0), Quaternion.identity, 0);
-                tail.transform.localScale = new Vector3(0.05f, 0.05f, 1);
                 tail.GetComponent<Renderer>().sortingOrder = -1 * (this.tails.Count + i);
                 tails.Add(tail);
                 DontDestroyOnLoad(tail);
@@ -175,5 +175,19 @@ namespace Com.Yk1028.SnakeGame
         }
 
         #endregion
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {
+                return;
+            }
+
+
+            if (other.tag == "Apple")
+            {
+                AddTails(NUM_OF_ADDITIONAL_TAILS);
+            }
+        }
     }
 }
