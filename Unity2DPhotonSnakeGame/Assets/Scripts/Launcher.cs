@@ -108,7 +108,7 @@ namespace Com.Yk1028.SnakeGame
 
         public override void OnJoinedRoom()
         {
-            PhotonNetwork.LoadLevel("Room for 1");
+            PhotonNetwork.LoadLevel("Main Room");
         }
 
         public override void OnConnectedToMaster()
