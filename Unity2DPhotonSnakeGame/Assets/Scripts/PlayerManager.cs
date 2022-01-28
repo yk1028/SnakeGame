@@ -187,14 +187,28 @@ namespace Com.Yk1028.SnakeGame
             if (other.tag == "Apple")
             {
                 AddTails(NUM_OF_ADDITIONAL_TAILS);
+                if (tails.Count >= 10)
+                {
+                    DestroyPlayer();
+                    GameManager.Instance.Win();
+                }
             }
             else
             {
-                PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
-                PhotonNetwork.Destroy(LocalPlayerInstance);
-
-                GameManager.Instance.LeaveRoom();
+                DestroyPlayer();
+                GameManager.Instance.GameOver();
             } 
+        }
+
+        private void DestroyPlayer()
+        {
+            PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
+            PhotonNetwork.Destroy(LocalPlayerInstance);
+
+            foreach (var tail in tails)
+            {
+                PhotonNetwork.Destroy(tail);
+            }
         }
     }
 }

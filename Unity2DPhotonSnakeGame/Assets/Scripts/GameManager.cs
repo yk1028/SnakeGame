@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
-
+using UnityEngine.UI;
 
 namespace Com.Yk1028.SnakeGame
 {
@@ -21,6 +21,10 @@ namespace Com.Yk1028.SnakeGame
         public GameObject playerPrefab;
 
         public GameObject applePrefab;
+
+        public GameObject gameEndMenu;
+
+        public Text gameEndText;
 
         public static GameManager Instance;
 
@@ -46,6 +50,8 @@ namespace Com.Yk1028.SnakeGame
         public void Start()
         {
             Instance = this;
+
+            gameEndMenu.SetActive(false);
 
             if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
             {
@@ -92,6 +98,17 @@ namespace Com.Yk1028.SnakeGame
             PhotonNetwork.LoadLevel("Main Room");
         }
 
+        public void Win()
+        {
+            gameEndText.text = "You Win!";
+            gameEndMenu.SetActive(true);
+        }
+
+        public void GameOver()
+        {
+            gameEndText.text = "Game Over";
+            gameEndMenu.SetActive(true);
+        }
 
         #endregion
 
