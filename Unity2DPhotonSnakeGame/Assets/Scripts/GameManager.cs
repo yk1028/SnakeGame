@@ -65,7 +65,6 @@ namespace Com.Yk1028.SnakeGame
             PhotonNetwork.LeaveRoom();
         }
 
-
         #endregion
 
         #region Private Methods

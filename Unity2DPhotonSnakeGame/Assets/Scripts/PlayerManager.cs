@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
-
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -24,6 +23,7 @@ namespace Com.Yk1028.SnakeGame
         private static readonly Quaternion INIT_ROTATION = new Quaternion(0, 0, 0, 0);
 
         private Vector2 headDirection;
+        private List<GameObject> tails;
 
         #endregion
 
@@ -32,13 +32,22 @@ namespace Com.Yk1028.SnakeGame
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
 
+        public GameObject tailPrefab;
+
         #endregion
 
         #region Public Methods
 
+        public void Init()
+        {
+            headDirection = INIT_DIRECTION;
+            tails = new List<GameObject>();
 
+            AddTails(INIT_NUM_OF_TAILS);
+        }
 
         #endregion
+
 
         #region MonoBehaviour CallBacks
 
@@ -48,13 +57,12 @@ namespace Com.Yk1028.SnakeGame
             // used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
             if (photonView.IsMine)
             {
+                Init();
                 PlayerManager.LocalPlayerInstance = this.gameObject;
             }
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
             DontDestroyOnLoad(this.gameObject);
-
-            headDirection = INIT_DIRECTION;
         }
 
         /// <summary>
@@ -69,11 +77,26 @@ namespace Com.Yk1028.SnakeGame
 
             ChangeHeadDirectionByTouch();
             UpdateHead();
+            UpdateTails();
         }
 
         #endregion
 
         #region Custom
+
+        public void AddTails(int count)
+        {
+            Vector3 lastPosition = this.tails.Count == 0 ? this.transform.position : this.tails[tails.Count - 1].transform.position;
+
+            for (int i = 1; i <= count; i++)
+            {
+                var tail = PhotonNetwork.Instantiate(this.tailPrefab.name, new Vector3(lastPosition.x, lastPosition.y, 0), Quaternion.identity, 0);
+                tail.transform.localScale = new Vector3(0.05f, 0.05f, 1);
+                tail.GetComponent<Renderer>().sortingOrder = -1 * (this.tails.Count + i);
+                tails.Add(tail);
+                DontDestroyOnLoad(tail);
+            }
+        }
 
         private void ChangeHeadDirectionByTouch()
         {
@@ -131,6 +154,24 @@ namespace Com.Yk1028.SnakeGame
 
             transform.position = new Vector2(transform.position.x + headDirection.x * unitPerSec,
                 transform.position.y + headDirection.y * unitPerSec);
+        }
+
+        private void UpdateTails()
+        {
+            var prev = transform.position;
+
+            foreach (var cur in tails)
+            {
+                var distance = Vector2.Distance(prev, cur.transform.position);
+                var x = (prev.x - cur.transform.position.x) / distance;
+                var y = (prev.y - cur.transform.position.y) / distance;
+
+                if (distance > 1)
+                {
+                    cur.transform.position = new Vector2(prev.x - x, prev.y - y);
+                }
+                prev = cur.transform.position;
+            }
         }
 
         #endregion
