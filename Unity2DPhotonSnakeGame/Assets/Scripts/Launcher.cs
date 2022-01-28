@@ -7,12 +7,8 @@ namespace Com.Yk1028.SnakeGame
 {
     public class Launcher : MonoBehaviourPunCallbacks
     {
-        #region Private Serializable Fields
 
-
-        #endregion
-
-        #region Public Fields
+        #region Private Fields
 
         [Tooltip("The Ui Panel to let the user enter name, connect and play")]
         [SerializeField]
@@ -30,7 +26,7 @@ namespace Com.Yk1028.SnakeGame
 
         #endregion
 
-        #region Private Fields
+        #region Fields
 
 
         /// <summary>

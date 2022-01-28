@@ -152,8 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509e64c812e672849a603c8cc74275f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applePrefab: {fileID: 6367536003638874900, guid: 571526e3a18c6b944998ad78e1c731af, type: 3}
   controlPanel: {fileID: 995910565}
   progressLabel: {fileID: 1099414121}
+  maxPlayersPerRoom: 2
 --- !u!4 &959890091
 Transform:
   m_ObjectHideFlags: 0

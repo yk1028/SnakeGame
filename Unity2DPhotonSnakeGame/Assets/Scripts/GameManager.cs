@@ -20,7 +20,10 @@ namespace Com.Yk1028.SnakeGame
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
 
+        public GameObject applePrefab;
+
         #endregion
+
 
         #region Photon Callbacks
 
@@ -33,7 +36,6 @@ namespace Com.Yk1028.SnakeGame
             SceneManager.LoadScene(0);
         }
 
-
         #endregion
 
 
@@ -41,6 +43,11 @@ namespace Com.Yk1028.SnakeGame
 
         public void Start()
         {
+            if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(3, 3, 0), Quaternion.identity);
+            }
+
             if (playerPrefab == null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -52,6 +59,7 @@ namespace Com.Yk1028.SnakeGame
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+
                 }
                 else
                 {
@@ -83,18 +91,16 @@ namespace Com.Yk1028.SnakeGame
 
         #endregion
 
-        #region Photon Callbacks
 
+        #region MonoBehaviourPunCallbacks Callbacks
 
         public override void OnPlayerEnteredRoom(Player other)
         {
             Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
-
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-
 
                 LoadArena();
             }
@@ -109,7 +115,6 @@ namespace Com.Yk1028.SnakeGame
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-
 
                 LoadArena();
             }
