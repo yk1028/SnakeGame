@@ -30,6 +30,7 @@ namespace Com.Yk1028.SnakeGame
 
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
+        public static PlayerManager Instance;
 
         public GameObject tailPrefab;
 
@@ -43,6 +44,13 @@ namespace Com.Yk1028.SnakeGame
             tails = new List<GameObject>();
 
             AddTails(INIT_NUM_OF_TAILS);
+
+            PlayerManager.LocalPlayerInstance = this.gameObject;
+
+            if (Instance == null)
+            {
+                Instance = this;
+            }
         }
 
         #endregion
@@ -59,16 +67,12 @@ namespace Com.Yk1028.SnakeGame
             if (photonView.IsMine)
             {
                 Init();
-                PlayerManager.LocalPlayerInstance = this.gameObject;
             }
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
             DontDestroyOnLoad(this.gameObject);
         }
 
-        /// <summary>
-        /// MonoBehaviour method called on GameObject by Unity on every frame.
-        /// </summary>
         void Update()
         {
             if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
@@ -183,21 +187,41 @@ namespace Com.Yk1028.SnakeGame
                 return;
             }
 
-
             if (other.tag == "Apple")
             {
                 AddTails(NUM_OF_ADDITIONAL_TAILS);
+
                 if (tails.Count >= 10)
                 {
-                    DestroyPlayer();
-                    GameManager.Instance.Win();
+                    Win();
                 }
             }
             else
             {
-                DestroyPlayer();
-                GameManager.Instance.GameOver();
-            } 
+                Lose();
+            }
+        }
+
+        public void Win()
+        {
+            if (this.gameObject == null)
+            {
+                return;
+            }
+
+            DestroyPlayer();
+            GameManager.Instance.Win();
+        }
+
+        public void Lose()
+        {
+            if (this.gameObject == null)
+            {
+                return;
+            }
+
+            DestroyPlayer();
+            GameManager.Instance.GameOver();
         }
 
         private void DestroyPlayer()

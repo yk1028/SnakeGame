@@ -47,9 +47,12 @@ namespace Com.Yk1028.SnakeGame
 
         #region Public Methods
 
-        public void Start()
+        public void Awake()
         {
-            Instance = this;
+            if (Instance == null)
+            {
+                Instance = this;
+            }
 
             gameEndMenu.SetActive(false);
 
@@ -95,6 +98,11 @@ namespace Com.Yk1028.SnakeGame
             PhotonNetwork.LoadLevel("Main Room");
         }
 
+        private float GenerateRandom(float bound)
+        {
+            return Mathf.Floor(UnityEngine.Random.value * bound * 2 + 1) - bound;
+        }
+
         public void CreateApple()
         {
             if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
@@ -111,14 +119,10 @@ namespace Com.Yk1028.SnakeGame
             }
         }
 
-        private float GenerateRandom(float bound)
-        {
-            return Mathf.Floor(UnityEngine.Random.value * bound * 2 + 1) - bound;
-        }
-
         public void Win()
         {
             DestroyApple();
+            EventManager.Instance.RaiseLoseOthersEvent();
             gameEndText.text = "You Win!";
             gameEndMenu.SetActive(true);
         }
@@ -126,6 +130,7 @@ namespace Com.Yk1028.SnakeGame
         public void GameOver()
         {
             DestroyApple();
+            EventManager.Instance.RaiseWinOthersEvent();
             gameEndText.text = "Game Over";
             gameEndMenu.SetActive(true);
         }
