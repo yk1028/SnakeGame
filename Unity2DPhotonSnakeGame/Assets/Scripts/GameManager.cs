@@ -98,16 +98,12 @@ namespace Com.Yk1028.SnakeGame
             PhotonNetwork.LoadLevel("Main Room");
         }
 
-        private float GenerateRandom(float bound)
-        {
-            return Mathf.Floor(UnityEngine.Random.value * bound * 2 + 1) - bound;
-        }
-
         public void CreateApple()
         {
             if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
             {
-                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(GenerateRandom(15), GenerateRandom(6), 0), Quaternion.identity);
+                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(RandomGenerator.GenerateRandom(15),
+                    RandomGenerator.GenerateRandom(6), 0), Quaternion.identity);
             }
         }
 

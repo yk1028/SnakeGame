@@ -9,7 +9,6 @@ using Photon.Realtime;
 
 namespace Com.Yk1028.SnakeGame
 {
-
     public class AppleManager : MonoBehaviourPunCallbacks
     {
         private static readonly float MAP_WIDTH = 16.0f;
@@ -34,13 +33,23 @@ namespace Com.Yk1028.SnakeGame
                 return;
             }
 
-            transform.position = new Vector2(GenerateRandom(MAP_WIDTH), GenerateRandom(MAP_HEIGHT));
+            transform.position = new Vector2(RandomGenerator.GenerateRandom(MAP_WIDTH), RandomGenerator.GenerateRandom(MAP_HEIGHT));
+        }
+        public void CreateApple()
+        {
+            if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(RandomGenerator.GenerateRandom(15),
+                    RandomGenerator.GenerateRandom(6), 0), Quaternion.identity);
+            }
         }
 
-        private float GenerateRandom(float bound)
+        public void DestroyApple()
         {
-            var positionBound = bound - 1;
-            return Mathf.Floor(UnityEngine.Random.value * positionBound * 2 + 1) - positionBound;
+            if (AppleManager.LocalAppleInstance != null && PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
+            }
         }
 
     }

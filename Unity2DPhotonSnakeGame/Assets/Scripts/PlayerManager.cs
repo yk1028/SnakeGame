@@ -38,7 +38,7 @@ namespace Com.Yk1028.SnakeGame
 
         #region Public Methods
 
-        public void Init()
+        void Init()
         {
             headDirection = INIT_DIRECTION;
             tails = new List<GameObject>();
@@ -58,7 +58,7 @@ namespace Com.Yk1028.SnakeGame
 
         #region MonoBehaviour CallBacks
 
-        public void Awake()
+        void Awake()
         {
             this.tailPrefab.transform.localScale = INIT_SCALE;
 
