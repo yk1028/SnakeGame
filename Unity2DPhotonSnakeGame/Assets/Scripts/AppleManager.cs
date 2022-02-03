@@ -35,22 +35,5 @@ namespace Com.Yk1028.SnakeGame
 
             transform.position = new Vector2(RandomGenerator.GenerateRandom(MAP_WIDTH), RandomGenerator.GenerateRandom(MAP_HEIGHT));
         }
-        public void CreateApple()
-        {
-            if (AppleManager.LocalAppleInstance == null && PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(RandomGenerator.GenerateRandom(15),
-                    RandomGenerator.GenerateRandom(6), 0), Quaternion.identity);
-            }
-        }
-
-        public void DestroyApple()
-        {
-            if (AppleManager.LocalAppleInstance != null && PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
-            }
-        }
-
     }
 }
