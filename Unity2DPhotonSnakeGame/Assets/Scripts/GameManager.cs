@@ -102,6 +102,15 @@ namespace Com.Yk1028.SnakeGame
                 PhotonNetwork.InstantiateRoomObject(applePrefab.name, new Vector3(GenerateRandom(15), GenerateRandom(6), 0), Quaternion.identity);
             }
         }
+
+        public void DestroyApple()
+        {
+            if (AppleManager.LocalAppleInstance != null && PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
+            }
+        }
+
         private float GenerateRandom(float bound)
         {
             return Mathf.Floor(UnityEngine.Random.value * bound * 2 + 1) - bound;
@@ -109,12 +118,14 @@ namespace Com.Yk1028.SnakeGame
 
         public void Win()
         {
+            DestroyApple();
             gameEndText.text = "You Win!";
             gameEndMenu.SetActive(true);
         }
 
         public void GameOver()
         {
+            DestroyApple();
             gameEndText.text = "Game Over";
             gameEndMenu.SetActive(true);
         }

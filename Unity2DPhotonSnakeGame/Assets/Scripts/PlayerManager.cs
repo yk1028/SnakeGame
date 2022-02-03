@@ -202,13 +202,13 @@ namespace Com.Yk1028.SnakeGame
 
         private void DestroyPlayer()
         {
-            PhotonNetwork.Destroy(AppleManager.LocalAppleInstance);
-            PhotonNetwork.Destroy(LocalPlayerInstance);
-
             foreach (var tail in tails)
             {
                 PhotonNetwork.Destroy(tail);
+                Destroy(tail);
             }
+            PhotonNetwork.Destroy(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 }
