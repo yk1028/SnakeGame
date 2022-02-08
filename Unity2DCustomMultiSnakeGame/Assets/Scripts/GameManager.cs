@@ -2,52 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Com.Yk1028.SnakeGame
 {
-    public GameObject mainMenu;
-
-    public GameObject snakePrefab;
-    public GameObject applePrefab;
-
-    private static GameManager instance = null;
-
-    public static GameManager Instance
+    public class GameManager : MonoBehaviour
     {
-        get
-        {
-            return instance;
-        }
-    }
+        public GameObject mainMenu;
 
-    void Awake()
-    {
-        if (instance)
+        public GameObject snakePrefab;
+        public GameObject applePrefab;
+
+        private static GameManager instance = null;
+
+        public static GameManager Instance
         {
-            Destroy(this.gameObject);
-            return;
+            get
+            {
+                return instance;
+            }
         }
 
-        instance = this;
+        void Awake()
+        {
+            if (instance)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
 
-        DontDestroyOnLoad(this.gameObject);
-    }
+            instance = this;
 
-    public void Init()
-    {
-        mainMenu.SetActive(false);
-        enabled = true;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
-        CreateApple();
-        CreateSnake();
-    }
+        public void Init()
+        {
+            mainMenu.SetActive(false);
+            enabled = true;
 
-    private void CreateApple()
-    {
-        Instantiate(applePrefab);
-    }
+            CreateApple();
+            CreateSnake();
+        }
 
-    private void CreateSnake()
-    {
-        Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
+        private void CreateApple()
+        {
+            Instantiate(applePrefab);
+        }
+
+        private void CreateSnake()
+        {
+            Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
+        }
     }
 }

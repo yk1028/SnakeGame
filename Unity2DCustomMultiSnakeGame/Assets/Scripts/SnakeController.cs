@@ -54,6 +54,12 @@ namespace Com.Yk1028.SnakeGame
                 var worldPos = Camera.main.ScreenToWorldPoint(touchPos);
 
                 MoveTo(worldPos);
+
+                AsynchronousClient.Send(
+                    new SnakeInfo(transform.localPosition.x, 
+                    transform.localPosition.x,
+                    headDirection.x,
+                    headDirection.y));
             }
         }
 

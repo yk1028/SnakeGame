@@ -13,7 +13,7 @@
 - X4 (Android 9)
 
 ### 개발 순서
-1. [ ] Client Networking (C#)
+1. [x] Client Networking (C#)
 2. [ ] Server Networking (node.js)
 3. [ ] Snake 동기화
     1. [ ] 머리 동기화

@@ -1,11 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class StartButtonController : MonoBehaviour
+namespace Com.Yk1028.SnakeGame
 {
-    public void PlayGame()
+
+    public class StartButtonController : MonoBehaviour
     {
-        GameManager.Instance.Init();
+        public Text hostIP;
+        public Text hostPort;
+
+        public void PlayGame()
+        {
+            GameManager.Instance.Init();
+            var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
+            thread.Start();
+        }
     }
 }
