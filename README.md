@@ -1,4 +1,31 @@
 # SnakeGame
+## 3. Custom Multiplay with Unity(2022.02.04 ~ )
+### 개발 환경
+- Windows 10
+- Unity 2020.3.26f1
+
+### 사용 언어
+- C#
+- JavaScript
+
+### 테스트 환경
+- PC (Windows 10)
+- X4 (Android 9)
+
+### 개발 순서
+1. [ ] Client Networking (C#)
+2. [ ] Server Networking (node.js)
+3. [ ] Snake 동기화
+    1. [ ] 머리 동기화
+    2. [ ] 꼬리 동기화
+ 1. [ ] Apple 동기화
+    1. [ ] Apple 랜덤한 위치에 생성
+    2. [ ] Snake가 Apple 먹었는지 판단 후 재배치
+    3. [ ] Apple 먹었으면 Snake 꼬리 증가
+ 2. [ ] 패배 조건 추가
+ 3. [ ] 승리 조건 추가
+ 4. [ ] 동시 종료
+
 ## 3. Multiplay with Unity(2022.01.24 ~ 2022.02.03)
 ### 개발 환경
 - Windows 10
