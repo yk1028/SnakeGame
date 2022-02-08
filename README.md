@@ -14,7 +14,7 @@
 
 ### 개발 순서
 1. [x] Client Networking (C#)
-2. [ ] Server Networking (node.js)
+2. [x] Server Networking (node.js)
 3. [ ] Snake 동기화
     1. [ ] 머리 동기화
     2. [ ] 꼬리 동기화
