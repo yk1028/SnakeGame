@@ -10,8 +10,11 @@ namespace Com.Yk1028.SnakeGame
 
         public GameObject snakePrefab;
         public GameObject applePrefab;
+        public GameObject tailPrefab;
 
         private static GameManager instance = null;
+
+        public static GameObject enemySnake;
 
         public static GameManager Instance
         {
@@ -31,6 +34,8 @@ namespace Com.Yk1028.SnakeGame
 
             instance = this;
 
+            this.tailPrefab.transform.localScale = new Vector3(0.05f, 0.05f, 1);
+
             DontDestroyOnLoad(this.gameObject);
         }
 
@@ -40,7 +45,7 @@ namespace Com.Yk1028.SnakeGame
             enabled = true;
 
             CreateApple();
-            CreateSnake();
+            CreateMySnake();
         }
 
         private void CreateApple()
@@ -48,9 +53,28 @@ namespace Com.Yk1028.SnakeGame
             Instantiate(applePrefab);
         }
 
-        private void CreateSnake()
+        private void CreateMySnake()
         {
-            Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
+            GameObject snake = Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
+            snake.AddComponent<SnakeController>();
+        }
+
+        public void ReceiveEnemySnakeInfo(SnakeInfo snakeInfo)
+        {
+            if (enemySnake == null)
+            {
+                enemySnake = CreateEnemySnake(snakeInfo);
+            }
+
+            var ctrl = enemySnake.GetComponent<EnemySnakeController>();
+            ctrl.ChangeHead(snakeInfo);
+        }
+
+        private GameObject CreateEnemySnake(SnakeInfo snakeInfo)
+        {
+            GameObject snake = Instantiate(snakePrefab, new Vector2(snakeInfo.positionX, snakeInfo.positionY), Quaternion.identity);
+            snake.AddComponent<EnemySnakeController>();
+            return snake;
         }
     }
 }

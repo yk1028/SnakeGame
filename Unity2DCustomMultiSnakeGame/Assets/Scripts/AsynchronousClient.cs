@@ -64,21 +64,6 @@ namespace Com.Yk1028.SnakeGame
             }
         }
 
-        public static byte[] Serialize(object anySerializableObject)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                (new BinaryFormatter()).Serialize(memoryStream, anySerializableObject);
-                return memoryStream.ToArray();
-            }
-        }
-
-        public static object Deserialize(byte[] message)
-        {
-            using (var memoryStream = new MemoryStream(message))
-                return (new BinaryFormatter()).Deserialize(memoryStream);
-        }
-
         private static void Send(Socket client, SnakeInfo info)
         {
             // Convert the string data to byte data using ASCII encoding.  
@@ -160,7 +145,7 @@ namespace Com.Yk1028.SnakeGame
                 {
                     SnakeInfo snakeInfo = (SnakeInfo) Deserialize(state.buffer);
 
-                    Debug.Log(snakeInfo);
+                    GameManager.Instance.ReceiveEnemySnakeInfo(snakeInfo);
                 }
 
                 client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
@@ -170,6 +155,21 @@ namespace Com.Yk1028.SnakeGame
             {
                 Debug.Log(e.ToString());
             }
+        }
+
+        public static byte[] Serialize(object anySerializableObject)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                (new BinaryFormatter()).Serialize(memoryStream, anySerializableObject);
+                return memoryStream.ToArray();
+            }
+        }
+
+        public static object Deserialize(byte[] message)
+        {
+            using (var memoryStream = new MemoryStream(message))
+                return (new BinaryFormatter()).Deserialize(memoryStream);
         }
     }
 }

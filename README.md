@@ -16,8 +16,8 @@
 1. [x] Client Networking (C#)
 2. [x] Server Networking (node.js)
 3. [ ] Snake 동기화
-    1. [ ] 머리 동기화
-    2. [ ] 꼬리 동기화
+    1. [x] 머리 동기화
+    2. [ ] 꼬리 개수 동기화
  1. [ ] Apple 동기화
     1. [ ] Apple 랜덤한 위치에 생성
     2. [ ] Snake가 Apple 먹었는지 판단 후 재배치

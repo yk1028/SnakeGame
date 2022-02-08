@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace Com.Yk1028.SnakeGame
 {
-    public class SnakeController : MonoBehaviour
+    public class EnemySnakeController : MonoBehaviour
     {
-        private static readonly float SPEED = 5.0f;
         private static readonly int INIT_NUM_OF_TAILS = 2;
         private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
         private static readonly int NUM_OF_WINNIG_TAILS = 10;
@@ -37,35 +36,15 @@ namespace Com.Yk1028.SnakeGame
 
         public void Update()
         {
-            ChangeHeadDirectionByTouch();
             SnakeUpdateSupporter.UpdateHead(this.gameObject, headDirection);
             SnakeUpdateSupporter.UpdateTails(this.gameObject, tails);
         }
 
-        private void ChangeHeadDirectionByTouch()
+        public void ChangeHead(SnakeInfo snakeInfo)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                var touchPos = Input.mousePosition;
-                var worldPos = Camera.main.ScreenToWorldPoint(touchPos);
-
-                MoveTo(worldPos);
-
-                AsynchronousClient.Send(
-                    new SnakeInfo(transform.localPosition.x,
-                    transform.localPosition.y,
-                    headDirection.x,
-                    headDirection.y));
-            }
-        }
-
-        private void MoveTo(Vector2 targetPos)
-        {
-            var distanceToTarget = Vector2.Distance(targetPos, transform.localPosition);
-
-            headDirection.x = (targetPos.x - transform.localPosition.x) / distanceToTarget;
-            headDirection.y = (targetPos.y - transform.localPosition.y) / distanceToTarget;
-
+            this.transform.localPosition = new Vector2(snakeInfo.positionX, snakeInfo.positionY);
+            this.headDirection.x = snakeInfo.directionX;
+            this.headDirection.y = snakeInfo.directionY;
             SnakeUpdateSupporter.RotateHead(this.gameObject, headDirection);
         }
 
