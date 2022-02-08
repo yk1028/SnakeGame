@@ -58,20 +58,23 @@ namespace Com.Yk1028.SnakeGame
 
         public static void Send(SnakeInfo info)
         {
-            if (client != null)
-            {
-                Send(client, info);
-            }
+            Send(Serialize(info));
         }
 
-        private static void Send(Socket client, SnakeInfo info)
+        public static void Send(AppleInfo info)
         {
-            // Convert the string data to byte data using ASCII encoding.  
-            byte[] byteData = Serialize(info);
+            Send(Serialize(info));
+        }
 
-            // Begin sending the data to the remote device.  
-            client.BeginSend(byteData, 0, byteData.Length, 0,
+        private static void Send(byte[] byteData)
+        {
+            if (client != null)
+            {
+                client.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallback), client);
+            }
+            // Begin sending the data to the remote device.  
+            
         }
 
         private static void SendCallback(IAsyncResult ar)
@@ -143,9 +146,16 @@ namespace Com.Yk1028.SnakeGame
 
                 if (bytesRead > 1)
                 {
-                    SnakeInfo snakeInfo = (SnakeInfo) Deserialize(state.buffer);
+                    object obj = Deserialize(state.buffer);
 
-                    GameManager.Instance.ReceiveEnemySnakeInfo(snakeInfo);
+                    if (obj is SnakeInfo)
+                    {
+                        GameManager.Instance.ReceiveEnemySnakeInfo((SnakeInfo) obj);
+                    } 
+                    else if (obj is AppleInfo)
+                    {
+                        GameManager.Instance.ReceiveAppleInfo((AppleInfo) obj);
+                    }
                 }
 
                 client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,

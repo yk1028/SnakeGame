@@ -6,7 +6,6 @@ namespace Com.Yk1028.SnakeGame
 {
     public class SnakeController : MonoBehaviour
     {
-        private static readonly float SPEED = 5.0f;
         private static readonly int INIT_NUM_OF_TAILS = 2;
         private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
         private static readonly int NUM_OF_WINNIG_TAILS = 10;
@@ -51,11 +50,7 @@ namespace Com.Yk1028.SnakeGame
 
                 MoveTo(worldPos);
 
-                AsynchronousClient.Send(
-                    new SnakeInfo(transform.localPosition.x,
-                    transform.localPosition.y,
-                    headDirection.x,
-                    headDirection.y));
+                GameManager.Instance.SendSnakeInfo(transform.position, headDirection);
             }
         }
 
@@ -74,6 +69,8 @@ namespace Com.Yk1028.SnakeGame
             if (other.tag == "Apple")
             {
                 AddTails(NUM_OF_ADDITIONAL_TAILS);
+
+                GameManager.Instance.SendAppleInfo();
 
                 if (tails.Count >= NUM_OF_WINNIG_TAILS)
                 {

@@ -9,12 +9,14 @@ namespace Com.Yk1028.SnakeGame
         public GameObject mainMenu;
 
         public GameObject snakePrefab;
+        public GameObject enemySnakePrefab;
         public GameObject applePrefab;
         public GameObject tailPrefab;
 
         private static GameManager instance = null;
 
-        public static GameObject enemySnake;
+        public static GameObject apple;
+        public static EnemySnakeController enemySnakeCtrl;
 
         public static GameManager Instance
         {
@@ -50,31 +52,43 @@ namespace Com.Yk1028.SnakeGame
 
         private void CreateApple()
         {
-            Instantiate(applePrefab);
+            apple = Instantiate(applePrefab);
         }
 
         private void CreateMySnake()
         {
-            GameObject snake = Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
-            snake.AddComponent<SnakeController>();
-        }
-
-        public void ReceiveEnemySnakeInfo(SnakeInfo snakeInfo)
-        {
-            if (enemySnake == null)
-            {
-                enemySnake = CreateEnemySnake(snakeInfo);
-            }
-
-            var ctrl = enemySnake.GetComponent<EnemySnakeController>();
-            ctrl.ChangeHead(snakeInfo);
+            Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
         }
 
         private GameObject CreateEnemySnake(SnakeInfo snakeInfo)
         {
-            GameObject snake = Instantiate(snakePrefab, new Vector2(snakeInfo.positionX, snakeInfo.positionY), Quaternion.identity);
-            snake.AddComponent<EnemySnakeController>();
-            return snake;
+            return Instantiate(enemySnakePrefab, new Vector2(snakeInfo.positionX, snakeInfo.positionY), Quaternion.identity);
+        }
+
+        public void SendSnakeInfo(Vector2 position, Vector2 direction)
+        {
+            AsynchronousClient.Send(new SnakeInfo(position.x, position.y, direction.x, direction.y));
+        }
+
+        public void ReceiveEnemySnakeInfo(SnakeInfo snakeInfo)
+        {
+            if (enemySnakeCtrl == null)
+            {
+                var enemySnake = CreateEnemySnake(snakeInfo);
+                enemySnakeCtrl = enemySnake.GetComponent<EnemySnakeController>();
+            }
+
+            enemySnakeCtrl.ChangeHead(snakeInfo);
+        }
+        public void SendAppleInfo()
+        {
+            AsynchronousClient.Send(new AppleInfo(apple.transform.localPosition));
+        }
+
+        public void ReceiveAppleInfo(AppleInfo appleInfo)
+        {
+            apple.transform.localPosition = appleInfo.GetPosition();
+            enemySnakeCtrl.AddTails(1);
         }
     }
 }

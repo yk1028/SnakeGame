@@ -22,7 +22,7 @@ namespace Com.Yk1028.SnakeGame
             AddTails(INIT_NUM_OF_TAILS);
         }
 
-        private void AddTails(int count)
+        public void AddTails(int count)
         {
             Vector3 lastPosition = this.tails.Count == 0 ? this.transform.position : this.tails[tails.Count - 1].transform.position;
 
@@ -46,23 +46,6 @@ namespace Com.Yk1028.SnakeGame
             this.headDirection.x = snakeInfo.directionX;
             this.headDirection.y = snakeInfo.directionY;
             SnakeUpdateSupporter.RotateHead(this.gameObject, headDirection);
-        }
-
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.tag == "Apple")
-            {
-                AddTails(NUM_OF_ADDITIONAL_TAILS);
-
-                if (tails.Count >= NUM_OF_WINNIG_TAILS)
-                {
-                    // win
-                }
-            }
-            else
-            {
-                // lose
-            }
         }
     }
 }
