@@ -11,7 +11,7 @@ namespace Com.Yk1028.SnakeGame
         private static readonly int NUM_OF_WINNIG_TAILS = 10;
         private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
 
-        private Vector2 headDirection;
+        public Vector2 headDirection;
         private List<GameObject> tails;
 
         void Awake()
@@ -69,8 +69,6 @@ namespace Com.Yk1028.SnakeGame
             if (other.tag == "Apple")
             {
                 AddTails(NUM_OF_ADDITIONAL_TAILS);
-
-                GameManager.Instance.SendAppleInfo();
 
                 if (tails.Count >= NUM_OF_WINNIG_TAILS)
                 {

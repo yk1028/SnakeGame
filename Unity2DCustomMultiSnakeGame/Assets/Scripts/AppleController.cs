@@ -9,11 +9,6 @@ namespace Com.Yk1028.SnakeGame
         private static readonly float MAP_WIDTH = 16.0f;
         private static readonly float MAP_HEIGHT = 7.0f;
 
-        private void Awake()
-        {
-            LocateApple();
-        }
-
         public void LocateApple()
         {
             transform.localPosition = new Vector2(GenerateRandom(MAP_WIDTH), GenerateRandom(MAP_HEIGHT));
@@ -28,6 +23,7 @@ namespace Com.Yk1028.SnakeGame
         void OnTriggerEnter2D(Collider2D other)
         {
             LocateApple();
+            GameManager.Instance.SendAppleInfo();
         }
     }
 }

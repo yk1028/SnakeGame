@@ -17,6 +17,7 @@ namespace Com.Yk1028.SnakeGame
             new ManualResetEvent(false);
 
         private static Socket client;
+        private static int clientId = 1;
 
         public static void StartClient(String hostIP, int serverPort)
         {
@@ -34,13 +35,15 @@ namespace Com.Yk1028.SnakeGame
                 // Connect to the remote endpoint.  
                 client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
+                
+                Send(new byte[1]);
 
                 Receive(client);
 
                 // Receive the response from the remote device.
                 gameDone.WaitOne();
 
-                // Release the socket.  
+                // Release the socket.
                 client.Shutdown(SocketShutdown.Both);
                 client.Close();
 
@@ -144,7 +147,19 @@ namespace Com.Yk1028.SnakeGame
                 // Read data from the remote device.  
                 int bytesRead = client.EndReceive(ar);
 
-                if (bytesRead > 1)
+                if (bytesRead == 1)
+                {
+                    int clientId = BitConverter.ToInt32(state.buffer, 0);
+                    if (clientId == '0')
+                    {
+                        AsynchronousClient.clientId = 0;
+                    }
+                    else if (clientId == '1')
+                    {
+                        GameManager.Instance.Init(AsynchronousClient.clientId);
+                    }
+                }
+                else if (bytesRead > 1)
                 {
                     object obj = Deserialize(state.buffer);
 

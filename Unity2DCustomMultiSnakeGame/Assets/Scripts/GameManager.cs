@@ -6,6 +6,10 @@ namespace Com.Yk1028.SnakeGame
 {
     public class GameManager : MonoBehaviour
     {
+        private static readonly Vector2 INIT_APPLE_POSITION = new Vector2(0, 0);
+        private static readonly Vector2[] INIT_POSITION = { new Vector2(-12, 0), new Vector2(12, 0) };
+        private static readonly Vector2[] INIT_DIRECTION = { new Vector2(1, 0), new Vector2(-1, 0) };
+
         public GameObject mainMenu;
 
         public GameObject snakePrefab;
@@ -17,6 +21,7 @@ namespace Com.Yk1028.SnakeGame
 
         public static GameObject apple;
         public static EnemySnakeController enemySnakeCtrl;
+        public static SnakeController mySnakeCtrl;
 
         public static GameManager Instance
         {
@@ -41,28 +46,33 @@ namespace Com.Yk1028.SnakeGame
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public void Init()
+        public void Init(int clientID)
         {
             mainMenu.SetActive(false);
             enabled = true;
 
             CreateApple();
-            CreateMySnake();
+            CreateMySnake(clientID);
+            CreateEnemySnake(1- clientID);
         }
 
         private void CreateApple()
         {
-            apple = Instantiate(applePrefab);
+            apple = Instantiate(applePrefab, INIT_APPLE_POSITION, Quaternion.identity);
         }
 
-        private void CreateMySnake()
+        private void CreateMySnake(int initIndex)
         {
-            Instantiate(snakePrefab, Vector3.zero, Quaternion.identity);
+            var mySnake = Instantiate(snakePrefab, INIT_POSITION[initIndex], Quaternion.identity);
+            mySnakeCtrl = mySnake.GetComponent<SnakeController>();
+            mySnakeCtrl.headDirection = INIT_DIRECTION[initIndex];
         }
 
-        private GameObject CreateEnemySnake(SnakeInfo snakeInfo)
+        private void CreateEnemySnake(int initIndex)
         {
-            return Instantiate(enemySnakePrefab, new Vector2(snakeInfo.positionX, snakeInfo.positionY), Quaternion.identity);
+            var enemySnake = Instantiate(enemySnakePrefab, INIT_POSITION[initIndex], Quaternion.identity);
+            enemySnakeCtrl = enemySnake.GetComponent<EnemySnakeController>();
+            enemySnakeCtrl.headDirection = INIT_DIRECTION[initIndex];
         }
 
         public void SendSnakeInfo(Vector2 position, Vector2 direction)
@@ -72,12 +82,6 @@ namespace Com.Yk1028.SnakeGame
 
         public void ReceiveEnemySnakeInfo(SnakeInfo snakeInfo)
         {
-            if (enemySnakeCtrl == null)
-            {
-                var enemySnake = CreateEnemySnake(snakeInfo);
-                enemySnakeCtrl = enemySnake.GetComponent<EnemySnakeController>();
-            }
-
             enemySnakeCtrl.ChangeHead(snakeInfo);
         }
         public void SendAppleInfo()

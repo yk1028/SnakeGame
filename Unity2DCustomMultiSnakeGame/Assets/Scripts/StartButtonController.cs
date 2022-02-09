@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,10 +9,12 @@ namespace Com.Yk1028.SnakeGame
     {
         public Text hostIP;
         public Text hostPort;
+        public GameObject connecting;
 
         public void PlayGame()
         {
-            GameManager.Instance.Init();
+            this.gameObject.SetActive(false);
+            connecting.SetActive(true);
             var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
             thread.Start();
         }
