@@ -6,6 +6,7 @@ namespace Com.Yk1028.SnakeGame
 {
     public class GameManager : MonoBehaviour
     {
+        private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
         private static readonly Vector2 INIT_APPLE_POSITION = new Vector2(0, 0);
         private static readonly Vector2[] INIT_POSITION = { new Vector2(-12, 0), new Vector2(12, 0) };
         private static readonly Vector2[] INIT_DIRECTION = { new Vector2(1, 0), new Vector2(-1, 0) };
@@ -53,7 +54,7 @@ namespace Com.Yk1028.SnakeGame
 
             CreateApple();
             CreateMySnake(clientID);
-            CreateEnemySnake(1- clientID);
+            CreateEnemySnake(1 - clientID);
         }
 
         private void CreateApple()
@@ -61,18 +62,20 @@ namespace Com.Yk1028.SnakeGame
             apple = Instantiate(applePrefab, INIT_APPLE_POSITION, Quaternion.identity);
         }
 
-        private void CreateMySnake(int initIndex)
+        private void CreateMySnake(int clientId)
         {
-            var mySnake = Instantiate(snakePrefab, INIT_POSITION[initIndex], Quaternion.identity);
+            var mySnake = Instantiate(snakePrefab, INIT_POSITION[clientId], Quaternion.identity);
             mySnakeCtrl = mySnake.GetComponent<SnakeController>();
-            mySnakeCtrl.headDirection = INIT_DIRECTION[initIndex];
+            mySnakeCtrl.ChangeHeadDirection(INIT_DIRECTION[clientId]);
+
         }
 
-        private void CreateEnemySnake(int initIndex)
+        private void CreateEnemySnake(int clientId)
         {
-            var enemySnake = Instantiate(enemySnakePrefab, INIT_POSITION[initIndex], Quaternion.identity);
+            var enemySnake = Instantiate(enemySnakePrefab, INIT_POSITION[clientId], Quaternion.identity);
             enemySnakeCtrl = enemySnake.GetComponent<EnemySnakeController>();
-            enemySnakeCtrl.headDirection = INIT_DIRECTION[initIndex];
+            enemySnakeCtrl.ChangeHeadDirection(INIT_DIRECTION[clientId]);
+
         }
 
         public void SendSnakeInfo(Vector2 position, Vector2 direction)
@@ -80,19 +83,28 @@ namespace Com.Yk1028.SnakeGame
             AsynchronousClient.Send(new SnakeInfo(position.x, position.y, direction.x, direction.y));
         }
 
-        public void ReceiveEnemySnakeInfo(SnakeInfo snakeInfo)
+        public void ReceiveEnemySnakeInfo(float positionX, float positionY, float directionX, float directionY)
         {
-            enemySnakeCtrl.ChangeHead(snakeInfo);
-        }
-        public void SendAppleInfo()
-        {
-            AsynchronousClient.Send(new AppleInfo(apple.transform.localPosition));
+            enemySnakeCtrl.ChangeHead(positionX, positionY, directionX, directionY);
         }
 
-        public void ReceiveAppleInfo(AppleInfo appleInfo)
+        public void SendAppleInfo()
         {
-            apple.transform.localPosition = appleInfo.GetPosition();
-            enemySnakeCtrl.AddTails(1);
+            AsynchronousClient.Send(new AppleInfo(apple.transform.localPosition.x, apple.transform.localPosition.y));
+        }
+
+        public void ReceiveAppleInfo(float positionX, float positionY, bool isMine)
+        {
+            apple.transform.localPosition = new Vector2(positionX, positionY);
+            if (isMine)
+            {
+                mySnakeCtrl.AddTails(NUM_OF_ADDITIONAL_TAILS);
+            }
+            else
+            {
+                enemySnakeCtrl.AddTails(NUM_OF_ADDITIONAL_TAILS);
+            }
+
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Threading;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Newtonsoft.Json;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Com.Yk1028.SnakeGame
 {
@@ -17,7 +20,6 @@ namespace Com.Yk1028.SnakeGame
             new ManualResetEvent(false);
 
         private static Socket client;
-        private static int clientId = 1;
 
         public static void StartClient(String hostIP, int serverPort)
         {
@@ -35,8 +37,8 @@ namespace Com.Yk1028.SnakeGame
                 // Connect to the remote endpoint.  
                 client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
-                
-                Send(new byte[1]);
+
+                SendStartRequest();
 
                 Receive(client);
 
@@ -59,14 +61,31 @@ namespace Com.Yk1028.SnakeGame
             gameDone.Set();
         }
 
+        public static void SendStartRequest()
+        {
+            RequestMessage m = new RequestMessage();
+            m.SetStartRequest();
+            m.ToSendData();
+
+            Send(m.ToSendData());
+        }
+
         public static void Send(SnakeInfo info)
         {
-            Send(Serialize(info));
+            RequestMessage m = new RequestMessage();
+            m.Set(info);
+            m.ToSendData();
+
+            Send(m.ToSendData());
         }
 
         public static void Send(AppleInfo info)
         {
-            Send(Serialize(info));
+            RequestMessage m = new RequestMessage();
+            m.Set(info);
+            m.ToSendData();
+
+            Send(m.ToSendData());
         }
 
         private static void Send(byte[] byteData)
@@ -76,8 +95,7 @@ namespace Com.Yk1028.SnakeGame
                 client.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallback), client);
             }
-            // Begin sending the data to the remote device.  
-            
+
         }
 
         private static void SendCallback(IAsyncResult ar)
@@ -147,31 +165,44 @@ namespace Com.Yk1028.SnakeGame
                 // Read data from the remote device.  
                 int bytesRead = client.EndReceive(ar);
 
-                if (bytesRead == 1)
+                if (bytesRead > 1)
                 {
-                    int clientId = BitConverter.ToInt32(state.buffer, 0);
-                    if (clientId == '0')
-                    {
-                        AsynchronousClient.clientId = 0;
-                    }
-                    else if (clientId == '1')
-                    {
-                        GameManager.Instance.Init(AsynchronousClient.clientId);
-                    }
-                }
-                else if (bytesRead > 1)
-                {
-                    object obj = Deserialize(state.buffer);
+                    ResponseMessage rm = state.GetResponseMessage();
 
-                    if (obj is SnakeInfo)
+                    int type = (int)rm.message.GetValue("type");
+
+                    if (type == 0)
                     {
-                        GameManager.Instance.ReceiveEnemySnakeInfo((SnakeInfo) obj);
-                    } 
-                    else if (obj is AppleInfo)
+                        int clientId = (int)rm.message.GetValue("clientId");
+                        bool canStart = (bool)rm.message.GetValue("start");
+
+                        if (canStart)
+                        {
+                            GameManager.Instance.Init(clientId);
+                        }
+                    }
+                    else if (type == 1)
                     {
-                        GameManager.Instance.ReceiveAppleInfo((AppleInfo) obj);
+                        JObject snake = (JObject)rm.message.GetValue("snake");
+                        float positionX = (float)snake.GetValue("posX");
+                        float positionY = (float)snake.GetValue("posY");
+                        float directionX = (float)snake.GetValue("dirX");
+                        float directionY = (float)snake.GetValue("dirY");
+
+                        GameManager.Instance.ReceiveEnemySnakeInfo(positionX, positionY, directionX, directionY);
+                    }
+                    else if (type == 2)
+                    {
+                        JObject apple = (JObject)rm.message.GetValue("apple");
+                        float positionX = (float)apple.GetValue("posX");
+                        float positionY = (float)apple.GetValue("posY");
+                        bool isMine = (bool)rm.message.GetValue("isMine");
+
+                        GameManager.Instance.ReceiveAppleInfo(positionX, positionY, isMine);
                     }
                 }
+
+                state.ClearBuffer();
 
                 client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                     new AsyncCallback(ReceiveCallback), state);
@@ -180,21 +211,6 @@ namespace Com.Yk1028.SnakeGame
             {
                 Debug.Log(e.ToString());
             }
-        }
-
-        public static byte[] Serialize(object anySerializableObject)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                (new BinaryFormatter()).Serialize(memoryStream, anySerializableObject);
-                return memoryStream.ToArray();
-            }
-        }
-
-        public static object Deserialize(byte[] message)
-        {
-            using (var memoryStream = new MemoryStream(message))
-                return (new BinaryFormatter()).Deserialize(memoryStream);
         }
     }
 }

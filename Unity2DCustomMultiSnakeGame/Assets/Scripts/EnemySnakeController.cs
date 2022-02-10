@@ -7,16 +7,12 @@ namespace Com.Yk1028.SnakeGame
     public class EnemySnakeController : MonoBehaviour
     {
         private static readonly int INIT_NUM_OF_TAILS = 2;
-        private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
-        private static readonly int NUM_OF_WINNIG_TAILS = 10;
-        private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
 
-        public Vector2 headDirection;
+        private Vector2 headDirection;
         private List<GameObject> tails;
 
         void Awake()
         {
-            headDirection = INIT_DIRECTION;
             tails = new List<GameObject>();
 
             AddTails(INIT_NUM_OF_TAILS);
@@ -40,11 +36,16 @@ namespace Com.Yk1028.SnakeGame
             SnakeUpdateSupporter.UpdateTails(this.gameObject, tails);
         }
 
-        public void ChangeHead(SnakeInfo snakeInfo)
+        public void ChangeHead(float positionX, float positionY, float directionX, float directionY)
         {
-            this.transform.localPosition = new Vector2(snakeInfo.positionX, snakeInfo.positionY);
-            this.headDirection.x = snakeInfo.directionX;
-            this.headDirection.y = snakeInfo.directionY;
+            this.transform.localPosition = new Vector2(positionX, positionY);
+
+            ChangeHeadDirection(new Vector2(directionX, directionY));
+        }
+
+        public void ChangeHeadDirection(Vector2 direction)
+        {
+            headDirection = new Vector2(direction.x, direction.y);
             SnakeUpdateSupporter.RotateHead(this.gameObject, headDirection);
         }
     }

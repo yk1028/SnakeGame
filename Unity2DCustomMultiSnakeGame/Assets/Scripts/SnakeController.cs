@@ -7,22 +7,19 @@ namespace Com.Yk1028.SnakeGame
     public class SnakeController : MonoBehaviour
     {
         private static readonly int INIT_NUM_OF_TAILS = 2;
-        private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
         private static readonly int NUM_OF_WINNIG_TAILS = 10;
-        private static readonly Vector2 INIT_DIRECTION = new Vector2(1, 0);
 
-        public Vector2 headDirection;
+        private Vector2 headDirection;
         private List<GameObject> tails;
 
         void Awake()
         {
-            headDirection = INIT_DIRECTION;
             tails = new List<GameObject>();
 
             AddTails(INIT_NUM_OF_TAILS);
         }
 
-        private void AddTails(int count)
+        public void AddTails(int count)
         {
             Vector3 lastPosition = this.tails.Count == 0 ? this.transform.position : this.tails[tails.Count - 1].transform.position;
 
@@ -64,11 +61,17 @@ namespace Com.Yk1028.SnakeGame
             SnakeUpdateSupporter.RotateHead(this.gameObject, headDirection);
         }
 
+        public void ChangeHeadDirection(Vector2 direction)
+        {
+            headDirection = new Vector2(direction.x, direction.y);
+
+            SnakeUpdateSupporter.RotateHead(this.gameObject, headDirection);
+        }
+
         void OnTriggerEnter2D(Collider2D other)
         {
             if (other.tag == "Apple")
             {
-                AddTails(NUM_OF_ADDITIONAL_TAILS);
 
                 if (tails.Count >= NUM_OF_WINNIG_TAILS)
                 {

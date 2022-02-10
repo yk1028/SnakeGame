@@ -1,26 +1,19 @@
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace Com.Yk1028.SnakeGame
 {
-    [SerializableAttribute]
+    [Serializable]
     public class SnakeInfo
     {
-        public float positionX;
-        public float positionY;
-        public float directionX;
-        public float directionY;
+        public JObject snakeInfo = new JObject();
 
         public SnakeInfo(float positionX, float positionY, float directionX, float directionY)
         {
-            this.positionX = positionX;
-            this.positionY = positionY;
-            this.directionX = directionX;
-            this.directionY = directionY;
-        }
-
-        public override string ToString()
-        {
-            return "position : (" + positionX + ", " + positionY + "), direction : (" + directionX + ", " + directionY + ")";
+            snakeInfo.Add("posX", positionX);
+            snakeInfo.Add("posY", positionY);
+            snakeInfo.Add("dirX", directionX);
+            snakeInfo.Add("dirY", directionY);
         }
     }
 }

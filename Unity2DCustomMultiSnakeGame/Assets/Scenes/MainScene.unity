@@ -8502,7 +8502,7 @@ TilemapCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 224146696}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -8528,35 +8528,9 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 224146700}
-    m_ColliderPaths:
-    - - X: 208691344
-        Y: 110152320
-      - X: -197707600
-        Y: 110152320
-      - X: -197707600
-        Y: -121167544
-      - X: 208691344
-        Y: -121167544
-    - - X: -175740096
-        Y: -99137088
-      - X: -175740096
-        Y: 88121856
-      - X: 186723840
-        Y: 88121856
-      - X: 186723840
-        Y: -99137088
+  m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: 20.869106, y: -12.116755}
-      - {x: 20.869106, y: 11.015232}
-      - {x: -19.77076, y: 11.0152025}
-      - {x: -19.770731, y: -12.116755}
-    - - {x: 18.672384, y: -9.913679}
-      - {x: -17.574009, y: -9.913679}
-      - {x: -17.57398, y: 8.812185}
-      - {x: 18.672384, y: 8.812156}
+    m_Paths: []
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &224146702

@@ -15,6 +15,7 @@ namespace Com.Yk1028.SnakeGame
         {
             this.gameObject.SetActive(false);
             connecting.SetActive(true);
+
             var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
             thread.Start();
         }
