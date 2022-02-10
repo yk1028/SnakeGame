@@ -8,6 +8,7 @@ namespace Com.Yk1028.SnakeGame
         private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
         private static readonly Vector2[] INIT_POSITION = { new Vector2(-12, 0), new Vector2(12, 0) };
         private static readonly Vector2[] INIT_DIRECTION = { new Vector2(1, 0), new Vector2(-1, 0) };
+        private static readonly Vector3 INIT_SCALE = new Vector3(0.05f, 0.05f, 1);
 
         public GameObject mainMenu;
         public GameObject gameOverMenu;
@@ -42,7 +43,7 @@ namespace Com.Yk1028.SnakeGame
 
             instance = this;
 
-            this.tailPrefab.transform.localScale = new Vector3(0.05f, 0.05f, 1);
+            this.tailPrefab.transform.localScale = INIT_SCALE;
 
             gameOverMenu.SetActive(false);
 

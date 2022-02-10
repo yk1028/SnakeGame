@@ -77,7 +77,6 @@ namespace Com.Yk1028.SnakeGame
         {
             if (other.tag != "Apple")
             {
-                Debug.Log("end");
                 GameManager.Instance.SendGameOver();
             }
         }

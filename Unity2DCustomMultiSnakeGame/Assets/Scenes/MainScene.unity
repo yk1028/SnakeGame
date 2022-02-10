@@ -9235,7 +9235,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 579191672}
-        m_TargetAssemblyTypeName: StartButtonController, Assembly-CSharp
+        m_TargetAssemblyTypeName: Com.Yk1028.SnakeGame.StartButtonController, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
@@ -9293,7 +9293,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 579191667}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b067cc4519847f642a1a4e63b40b9449, type: 3}
+  m_Script: {fileID: 11500000, guid: 883dcd60df55835489625a85f660d599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hostIP: {fileID: 286638722}
@@ -10055,9 +10055,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b067cc4519847f642a1a4e63b40b9449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenu: {fileID: 0}
   hostIP: {fileID: 0}
   hostPort: {fileID: 0}
   connecting: {fileID: 0}
+  gameOverMenu: {fileID: 0}
+  result: {fileID: 0}
 --- !u!114 &1140830792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10168,7 +10171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1321417146
 RectTransform:
   m_ObjectHideFlags: 0
