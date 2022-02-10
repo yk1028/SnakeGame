@@ -70,17 +70,10 @@ namespace Com.Yk1028.SnakeGame
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag == "Apple")
+            if (other.tag != "Apple")
             {
-
-                if (tails.Count >= NUM_OF_WINNIG_TAILS)
-                {
-                    // win
-                }
-            }
-            else
-            {
-                // lose
+                Debug.Log("end");
+                GameManager.Instance.SendGameOver();
             }
         }
     }

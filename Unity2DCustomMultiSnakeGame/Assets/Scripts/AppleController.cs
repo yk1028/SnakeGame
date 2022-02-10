@@ -9,7 +9,6 @@ namespace Com.Yk1028.SnakeGame
     {
         void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log(DateTime.Now);
             GameManager.Instance.SendAppleInfo();
         }
     }

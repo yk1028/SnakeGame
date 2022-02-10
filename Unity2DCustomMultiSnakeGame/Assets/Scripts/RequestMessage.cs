@@ -12,23 +12,6 @@ namespace Com.Yk1028.SnakeGame
     {
         public JObject message = new JObject();
 
-        public void SetStartRequest()
-        {
-            message.Add("type", 0);
-        }
-
-        public void Set(SnakeInfo snakeInfo)
-        {
-            message.Add("type", 1);
-            message.Add("snake", snakeInfo.snakeInfo);
-        }
-
-        public void Set(AppleInfo appleInfo)
-        {
-            message.Add("type", 2);
-            message.Add("apple", appleInfo.appleInfo);
-        }
-
         public byte[] ToSendData()
         {
             byte[] sendData = new byte[23500];

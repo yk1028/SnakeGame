@@ -63,30 +63,31 @@ namespace Com.Yk1028.SnakeGame
 
         public static void SendStartRequest()
         {
-            RequestMessage m = new RequestMessage();
-            m.SetStartRequest();
-            m.ToSendData();
-
-            Send(m.ToSendData());
+            Send(RequestMessageGenerator
+                .GenerateStartRequest()
+                .ToSendData());
         }
 
         public static void Send(SnakeInfo info)
         {
-            RequestMessage m = new RequestMessage();
-            m.Set(info);
-            m.ToSendData();
-
-            Send(m.ToSendData());
+            Send(RequestMessageGenerator
+                .GenerateSnakeRequest(info)
+                .ToSendData());
         }
 
         public static void Send(AppleInfo info)
         {
-            RequestMessage m = new RequestMessage();
-            m.Set(info);
-            m.ToSendData();
-
-            Send(m.ToSendData());
+            Send(RequestMessageGenerator
+                .GenerateAppleRequest(info)
+                .ToSendData());
         }
+        public static void SendGameOver()
+        {
+            Send(RequestMessageGenerator
+                .GenerateGameOverRequest()
+                .ToSendData());
+        }
+
 
         private static void Send(byte[] byteData)
         {
@@ -203,6 +204,12 @@ namespace Com.Yk1028.SnakeGame
                         bool isMine = (bool)rm.message.GetValue("isMine");
 
                         GameManager.Instance.ReceiveAppleInfo(positionX, positionY, isMine);
+                    }
+                    else if (type == 3)
+                    {
+                        bool win = (bool)rm.message.GetValue("win");
+
+                        GameManager.Instance.GameEnd(win);
                     }
                 }
 

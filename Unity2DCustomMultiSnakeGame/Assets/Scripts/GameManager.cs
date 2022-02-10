@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Com.Yk1028.SnakeGame
 {
@@ -11,6 +10,8 @@ namespace Com.Yk1028.SnakeGame
         private static readonly Vector2[] INIT_DIRECTION = { new Vector2(1, 0), new Vector2(-1, 0) };
 
         public GameObject mainMenu;
+        public GameObject gameOverMenu;
+        public Text result;
 
         public GameObject snakePrefab;
         public GameObject enemySnakePrefab;
@@ -42,6 +43,8 @@ namespace Com.Yk1028.SnakeGame
             instance = this;
 
             this.tailPrefab.transform.localScale = new Vector3(0.05f, 0.05f, 1);
+
+            gameOverMenu.SetActive(false);
 
             DontDestroyOnLoad(this.gameObject);
         }
@@ -103,7 +106,34 @@ namespace Com.Yk1028.SnakeGame
             {
                 enemySnakeCtrl.AddTails(NUM_OF_ADDITIONAL_TAILS);
             }
+        }
 
+        public void SendGameOver()
+        {
+            AsynchronousClient.SendGameOver();
+        }
+
+        public void GameEnd(bool win)
+        {
+            Destroy(mySnakeCtrl);
+            Destroy(enemySnakeCtrl);
+            Destroy(apple);
+
+            gameOverMenu.SetActive(true);
+
+            if (win)
+            {
+                result.text = "Win";
+            }
+            else
+            {
+                result.text = "GameOver";
+            }
+        }
+
+        public void Exit()
+        {
+            Application.Quit();
         }
     }
 }
