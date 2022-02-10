@@ -29,10 +29,11 @@ namespace Com.Yk1028.SnakeGame
             return message;
         }
 
-        public static RequestMessage GenerateGameOverRequest()
+        public static RequestMessage GenerateGameEndRequest(bool win)
         {
             var message = new RequestMessage();
             message.message.Add("type", 3);
+            message.message.Add("win", win);
             return message;
         }
     }

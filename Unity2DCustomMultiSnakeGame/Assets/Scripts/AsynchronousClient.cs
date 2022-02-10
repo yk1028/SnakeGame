@@ -81,13 +81,12 @@ namespace Com.Yk1028.SnakeGame
                 .GenerateAppleRequest(info)
                 .ToSendData());
         }
-        public static void SendGameOver()
+        public static void SendGameEnd(bool win)
         {
             Send(RequestMessageGenerator
-                .GenerateGameOverRequest()
+                .GenerateGameEndRequest(win)
                 .ToSendData());
         }
-
 
         private static void Send(byte[] byteData)
         {

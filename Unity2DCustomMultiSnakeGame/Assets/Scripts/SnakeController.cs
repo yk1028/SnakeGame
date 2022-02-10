@@ -7,7 +7,7 @@ namespace Com.Yk1028.SnakeGame
     public class SnakeController : MonoBehaviour
     {
         private static readonly int INIT_NUM_OF_TAILS = 2;
-        private static readonly int NUM_OF_WINNIG_TAILS = 10;
+        private static readonly int NUM_OF_WINNIG_TAILS = 5;
 
         private Vector2 headDirection;
         private List<GameObject> tails;
@@ -21,6 +21,11 @@ namespace Com.Yk1028.SnakeGame
 
         public void AddTails(int count)
         {
+            if (tails.Count + 1 >= NUM_OF_WINNIG_TAILS)
+            {
+                GameManager.Instance.SendGameWin();
+            }
+
             Vector3 lastPosition = this.tails.Count == 0 ? this.transform.position : this.tails[tails.Count - 1].transform.position;
 
             for (int i = 1; i <= count; i++)

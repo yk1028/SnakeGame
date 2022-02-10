@@ -108,9 +108,14 @@ namespace Com.Yk1028.SnakeGame
             }
         }
 
+        public void SendGameWin()
+        {
+            AsynchronousClient.SendGameEnd(true);
+        }
+
         public void SendGameOver()
         {
-            AsynchronousClient.SendGameOver();
+            AsynchronousClient.SendGameEnd(false);
         }
 
         public void GameEnd(bool win)
