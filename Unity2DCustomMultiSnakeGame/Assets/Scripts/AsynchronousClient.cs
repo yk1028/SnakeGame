@@ -178,7 +178,11 @@ namespace Com.Yk1028.SnakeGame
 
                         if (canStart)
                         {
-                            GameManager.Instance.Init(clientId);
+                            JObject apple = (JObject)rm.message.GetValue("apple");
+                            float positionX = (float)apple.GetValue("posX");
+                            float positionY = (float)apple.GetValue("posY");
+
+                            GameManager.Instance.Init(clientId, positionX, positionY);
                         }
                     }
                     else if (type == 1)

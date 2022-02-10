@@ -7,7 +7,6 @@ namespace Com.Yk1028.SnakeGame
     public class GameManager : MonoBehaviour
     {
         private static readonly int NUM_OF_ADDITIONAL_TAILS = 1;
-        private static readonly Vector2 INIT_APPLE_POSITION = new Vector2(0, 0);
         private static readonly Vector2[] INIT_POSITION = { new Vector2(-12, 0), new Vector2(12, 0) };
         private static readonly Vector2[] INIT_DIRECTION = { new Vector2(1, 0), new Vector2(-1, 0) };
 
@@ -47,19 +46,19 @@ namespace Com.Yk1028.SnakeGame
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public void Init(int clientID)
+        public void Init(int clientID, float appleX, float appleY)
         {
             mainMenu.SetActive(false);
             enabled = true;
 
-            CreateApple();
+            CreateApple(appleX, appleY);
             CreateMySnake(clientID);
             CreateEnemySnake(1 - clientID);
         }
 
-        private void CreateApple()
+        private void CreateApple(float appleX, float appleY)
         {
-            apple = Instantiate(applePrefab, INIT_APPLE_POSITION, Quaternion.identity);
+            apple = Instantiate(applePrefab, new Vector2(appleX, appleY), Quaternion.identity);
         }
 
         private void CreateMySnake(int clientId)
