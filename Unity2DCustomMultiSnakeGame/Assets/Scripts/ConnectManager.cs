@@ -4,12 +4,24 @@ using UnityEngine.UI;
 
 namespace Com.Yk1028.SnakeGame
 {
-
-    public class StartButtonController : MonoBehaviour
+    public class ConnectManager : MonoBehaviour
     {
         public Text hostIP;
         public Text hostPort;
         public GameObject connecting;
+
+        public static ConnectManager Instace = null;
+
+        private void Awake()
+        {
+            Instace = this;
+            this.gameObject.SetActive(false);
+        }
+
+        public void Active()
+        {
+            this.gameObject.SetActive(true);
+        }
 
         public void PlayGame()
         {
