@@ -38,8 +38,6 @@ namespace Com.Yk1028.SnakeGame
                 client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
 
-                SendStartRequest();
-
                 Receive(client);
 
                 // Receive the response from the remote device.
@@ -85,6 +83,13 @@ namespace Com.Yk1028.SnakeGame
         {
             Send(RequestMessageGenerator
                 .GenerateGameEndRequest(win)
+                .ToSendData());
+        }
+
+        public static void SendCreateUser(string username)
+        {
+            Send(RequestMessageGenerator
+                .GenerateCreateUserRequest(username)
                 .ToSendData());
         }
 
@@ -209,6 +214,12 @@ namespace Com.Yk1028.SnakeGame
                         bool win = (bool)rm.message.GetValue("win");
 
                         GameManager.Instance.GameEnd(win);
+                    }
+                    else if (type == 5)
+                    {
+                        bool isSuccess = (bool)rm.message.GetValue("isSuccess");
+
+                        Debug.Log("success : " + isSuccess);
                     }
                 }
 
