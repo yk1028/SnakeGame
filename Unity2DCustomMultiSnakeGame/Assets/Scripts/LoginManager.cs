@@ -25,6 +25,8 @@ namespace Com.Yk1028.SnakeGame
         {
             this.gameObject.SetActive(false);
             ReadyManager.Instance.gameObject.SetActive(true);
+
+            AsynchronousClient.SendFindUserRecord();
         }
 
         public void LoginFail()

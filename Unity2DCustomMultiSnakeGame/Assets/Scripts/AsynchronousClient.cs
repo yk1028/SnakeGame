@@ -8,6 +8,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Com.Yk1028.SnakeGame
 {
@@ -97,6 +98,13 @@ namespace Com.Yk1028.SnakeGame
         {
             Send(RequestMessageGenerator
                 .GenerateCreateUserRequest(username)
+                .ToSendData());
+        }
+        
+        public static void SendFindUserRecord()
+        {
+            Send(RequestMessageGenerator
+                .GenerateFindUserRecordRequest()
                 .ToSendData());
         }
 
@@ -239,6 +247,20 @@ namespace Com.Yk1028.SnakeGame
                         bool isSuccess = (bool)rm.message.GetValue("isSuccess");
 
                         LoginManager.Instance.LoginSucess();
+                    }
+                    else if (type == 6)
+                    {
+                        JArray records = (JArray)rm.message.GetValue("records");
+
+                        List<bool> list = new List<bool>(); 
+
+                        foreach(JObject record in records)
+                        {
+                            bool win = (bool)record.GetValue("win");
+                            list.Add(win);
+                        }
+
+                        ReadyManager.Instance.ShowRecords(list);
                     }
                 }
 

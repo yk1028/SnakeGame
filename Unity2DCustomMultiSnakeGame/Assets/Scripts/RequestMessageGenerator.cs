@@ -52,5 +52,12 @@ namespace Com.Yk1028.SnakeGame
             message.message.Add("username", username);
             return message;
         }
+        
+        public static RequestMessage GenerateFindUserRecordRequest()
+        {
+            var message = new RequestMessage();
+            message.message.Add("type", 6);
+            return message;
+        }
     }
 }
