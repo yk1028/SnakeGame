@@ -37,6 +37,14 @@ namespace Com.Yk1028.SnakeGame
             return message;
         }
 
+        public static RequestMessage GenerateFindUserRequest(string username)
+        {
+            var message = new RequestMessage();
+            message.message.Add("type", 4);
+            message.message.Add("username", username);
+            return message;
+        }
+
         public static RequestMessage GenerateCreateUserRequest(string username)
         {
             var message = new RequestMessage();

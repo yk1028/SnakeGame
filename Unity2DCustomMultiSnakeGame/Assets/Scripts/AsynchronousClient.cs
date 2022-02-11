@@ -86,6 +86,13 @@ namespace Com.Yk1028.SnakeGame
                 .ToSendData());
         }
 
+        public static void SendFindUser(string username)
+        {
+            Send(RequestMessageGenerator
+                .GenerateFindUserRequest(username)
+                .ToSendData());
+        }
+
         public static void SendCreateUser(string username)
         {
             Send(RequestMessageGenerator
@@ -215,11 +222,23 @@ namespace Com.Yk1028.SnakeGame
 
                         GameManager.Instance.GameEnd(win);
                     }
+                    else if (type == 4)
+                    {
+                        bool isExist = (bool)rm.message.GetValue("isExist");
+
+                        if (isExist)
+                        {
+                            LoginManager.Instance.LoginSucess();
+                        } else
+                        {
+                            LoginManager.Instance.LoginFail();
+                        }
+                    }
                     else if (type == 5)
                     {
                         bool isSuccess = (bool)rm.message.GetValue("isSuccess");
 
-                        Debug.Log("success : " + isSuccess);
+                        LoginManager.Instance.LoginSucess();
                     }
                 }
 

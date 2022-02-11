@@ -18,10 +18,19 @@ namespace Com.Yk1028.SnakeGame
 
         public void Login()
         {
+            AsynchronousClient.SendFindUser(userName.text);
+        }
+
+        public void LoginSucess()
+        {
             this.gameObject.SetActive(false);
             ReadyManager.Instance.gameObject.SetActive(true);
+        }
 
-            AsynchronousClient.SendCreateUser(userName.text);
+        public void LoginFail()
+        {
+            this.gameObject.SetActive(false);
+            UserExistManager.Instance.gameObject.SetActive(true);
         }
     }
 }
