@@ -14,9 +14,8 @@ namespace Com.Yk1028.SnakeGame
 
         public byte[] ToSendData()
         {
-            byte[] sendData = new byte[23500];
             string json = JsonConvert.SerializeObject(message);
-            sendData = Encoding.UTF8.GetBytes(json);
+            byte[] sendData = Encoding.UTF8.GetBytes(json);
             return sendData;
         }
     }
