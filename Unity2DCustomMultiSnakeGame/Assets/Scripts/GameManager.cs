@@ -130,10 +130,12 @@ namespace Com.Yk1028.SnakeGame
             if (win)
             {
                 result.text = "Win";
+                //AsynchronousClient.SendGameResult(false);
             }
             else
             {
                 result.text = "GameOver";
+               // AsynchronousClient.SendGameLose(true);
             }
         }
 

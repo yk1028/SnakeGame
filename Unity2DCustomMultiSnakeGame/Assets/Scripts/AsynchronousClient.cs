@@ -20,6 +20,7 @@ namespace Com.Yk1028.SnakeGame
             new ManualResetEvent(false);
 
         private static Socket client;
+        private static int userId;
 
         public static void StartClient(String hostIP, int serverPort)
         {
@@ -225,10 +226,14 @@ namespace Com.Yk1028.SnakeGame
                     else if (type == 4)
                     {
                         bool isExist = (bool)rm.message.GetValue("isExist");
+                        
 
                         if (isExist)
                         {
                             LoginManager.Instance.LoginSucess();
+
+                            int userId = (int)rm.message.GetValue("userId");
+                            AsynchronousClient.userId = userId;
                         } else
                         {
                             LoginManager.Instance.LoginFail();
@@ -237,8 +242,11 @@ namespace Com.Yk1028.SnakeGame
                     else if (type == 5)
                     {
                         bool isSuccess = (bool)rm.message.GetValue("isSuccess");
+                        int userId = (int)rm.message.GetValue("userId");
 
                         LoginManager.Instance.LoginSucess();
+                        LoginManager.Instance.LoginSucess();
+                        AsynchronousClient.userId = userId;
                     }
                 }
 
