@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +18,24 @@ namespace Com.Yk1028.SnakeGame
         }
 
         public static void UpdateTails(GameObject head, List<GameObject> tails)
+        {
+            var prev = head.transform.position;
+
+            foreach (var cur in tails)
+            {
+                var distance = Vector2.Distance(prev, cur.transform.position);
+                var x = (prev.x - cur.transform.localPosition.x) / distance;
+                var y = (prev.y - cur.transform.localPosition.y) / distance;
+
+                if (distance > 1)
+                {
+                    cur.transform.localPosition = new Vector2(prev.x - x, prev.y - y);
+                }
+                prev = cur.transform.localPosition;
+            }
+        }
+
+        public static void UpdateTails(GameObject head, ConcurrentBag<GameObject> tails)
         {
             var prev = head.transform.position;
 

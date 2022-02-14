@@ -9570,7 +9570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &383305023
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9924,7 +9924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyButton: {fileID: 876958064}
   connecting: {fileID: 1092667692}
-  recordsText: {fileID: 0}
+  recordsText: {fileID: 1502982403}
 --- !u!1 &780343264
 GameObject:
   m_ObjectHideFlags: 0
@@ -11406,7 +11406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1218338374
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11840,7 +11840,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 160, y: 50}
+  m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1502982403
 MonoBehaviour:
@@ -11864,7 +11864,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -12179,7 +12179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1758849307
 RectTransform:
   m_ObjectHideFlags: 0

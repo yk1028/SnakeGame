@@ -38,9 +38,13 @@ namespace Com.Yk1028.SnakeGame
 
         public void Update()
         {
+
             ChangeHeadDirectionByTouch();
             SnakeUpdateSupporter.UpdateHead(this.gameObject, headDirection);
-            SnakeUpdateSupporter.UpdateTails(this.gameObject, tails);
+            if(tails != null)
+            {
+                SnakeUpdateSupporter.UpdateTails(this.gameObject, tails);
+            }
         }
 
         private void ChangeHeadDirectionByTouch()
@@ -71,6 +75,16 @@ namespace Com.Yk1028.SnakeGame
             headDirection = new Vector2(direction.x, direction.y);
 
             SnakeUpdateSupporter.RotateHead(this.gameObject, headDirection);
+        }
+
+        public void Destroy()
+        {
+            foreach (var tail in tails)
+            {
+                Destroy(tail);
+            }
+            tails = null;
+            
         }
 
         void OnTriggerEnter2D(Collider2D other)

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,21 +10,44 @@ namespace Com.Yk1028.SnakeGame
         public Text hostIP;
         public Text hostPort;
 
-        public static ConnectManager Instace = null;
+        private static ConnectManager instance = null;
+
+        public static Thread thread;
+
+        public static ConnectManager Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         private void Awake()
         {
-            Instace = this;
+            if (instance)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            instance = this;
         }
 
         public void PlayGame()
         {
             this.gameObject.SetActive(false);
             LoginManager.Instance.gameObject.SetActive(true);
-           
-            var thread = new Thread(() => AsynchronousClient.StartClient("34.64.155.34", 3000));
-            //var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
-            thread.Start();
+
+            try
+            {
+                thread = new Thread(() => AsynchronousClient.StartClient("34.64.92.18", 3000));
+                //var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
+                thread.Start();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.ToString());
+            }
+
         }
     }
 }

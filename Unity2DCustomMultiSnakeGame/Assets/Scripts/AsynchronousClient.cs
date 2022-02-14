@@ -42,11 +42,11 @@ namespace Com.Yk1028.SnakeGame
                 Receive(client);
 
                 // Receive the response from the remote device.
-                gameDone.WaitOne();
+                //gameDone.WaitOne();
 
                 // Release the socket.
-                client.Shutdown(SocketShutdown.Both);
-                client.Close();
+                //client.Shutdown(SocketShutdown.Both);
+                //client.Close();
 
             }
             catch (Exception e)
@@ -57,7 +57,9 @@ namespace Com.Yk1028.SnakeGame
 
         public static void EndClient()
         {
-            gameDone.Set();
+            client.Shutdown(SocketShutdown.Both);
+            client.Close();
+            //gameDone.Set();
         }
 
         public static void SendStartRequest()

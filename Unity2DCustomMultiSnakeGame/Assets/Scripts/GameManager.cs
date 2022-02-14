@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Com.Yk1028.SnakeGame
@@ -88,7 +89,7 @@ namespace Com.Yk1028.SnakeGame
 
         public void ReceiveEnemySnakeInfo(float positionX, float positionY, float directionX, float directionY)
         {
-            enemySnakeCtrl.ChangeHead(positionX, positionY, directionX, directionY);
+            enemySnakeCtrl.ChangeHeadValue(positionX, positionY, directionX, directionY);
         }
 
         public void SendAppleInfo()
@@ -121,9 +122,12 @@ namespace Com.Yk1028.SnakeGame
 
         public void GameEnd(bool win)
         {
-            Destroy(mySnakeCtrl);
-            Destroy(enemySnakeCtrl);
+            mySnakeCtrl.Destroy();
+            enemySnakeCtrl.Destroy();
+            Destroy(mySnakeCtrl.gameObject);
+            Destroy(enemySnakeCtrl.gameObject);
             Destroy(apple);
+
 
             gameOverMenu.SetActive(true);
 
@@ -139,6 +143,9 @@ namespace Com.Yk1028.SnakeGame
 
         public void Exit()
         {
+            AsynchronousClient.EndClient();
+            ConnectManager.thread.Join();
+
             Application.Quit();
         }
     }
