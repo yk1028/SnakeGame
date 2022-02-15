@@ -14,6 +14,8 @@ namespace Com.Yk1028.SnakeGame
         {
             this.gameObject.SetActive(false);
             Instance = this;
+
+            userName.text = PlayerPrefs.GetString("userName", "");
         }
 
         public void Login()
@@ -24,7 +26,10 @@ namespace Com.Yk1028.SnakeGame
         public void LoginSucess()
         {
             this.gameObject.SetActive(false);
-            ReadyManager.Instance.gameObject.SetActive(true);
+            ReadyManager.Instance.Init();
+
+            PlayerPrefs.SetString("userName", userName.text);
+            PlayerPrefs.Save();
 
             AsynchronousClient.SendFindUserRecord();
         }
@@ -33,6 +38,12 @@ namespace Com.Yk1028.SnakeGame
         {
             this.gameObject.SetActive(false);
             UserExistManager.Instance.gameObject.SetActive(true);
+        }
+
+        public void Restart()
+        {
+            this.gameObject.SetActive(true);
+            userName.text = PlayerPrefs.GetString("userName", "");
         }
     }
 }

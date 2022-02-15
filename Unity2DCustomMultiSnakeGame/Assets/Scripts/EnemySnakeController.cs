@@ -27,8 +27,7 @@ namespace Com.Yk1028.SnakeGame
 
         public void AddTails(int count)
         {
-            GameObject lastTail;
-            Vector3 lastPosition = tails.TryPeek(out lastTail) ?  lastTail.transform.position : this.transform.position;
+            Vector3 lastPosition = tails.TryPeek(out GameObject lastTail) ? lastTail.transform.position : this.transform.position;
 
             for (int i = 1; i <= count; i++)
             {

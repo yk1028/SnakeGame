@@ -38,7 +38,6 @@ namespace Com.Yk1028.SnakeGame
 
         public void Update()
         {
-
             ChangeHeadDirectionByTouch();
             SnakeUpdateSupporter.UpdateHead(this.gameObject, headDirection);
             if(tails != null)

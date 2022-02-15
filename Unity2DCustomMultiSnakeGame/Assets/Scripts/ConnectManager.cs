@@ -12,8 +12,6 @@ namespace Com.Yk1028.SnakeGame
 
         private static ConnectManager instance = null;
 
-        public static Thread thread;
-
         public static ConnectManager Instance
         {
             get
@@ -39,7 +37,7 @@ namespace Com.Yk1028.SnakeGame
 
             try
             {
-                thread = new Thread(() => AsynchronousClient.StartClient("34.64.92.18", 3000));
+                Thread thread = new Thread(() => AsynchronousClient.StartClient("34.64.92.18", 3000));
                 //var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
                 thread.Start();
             }

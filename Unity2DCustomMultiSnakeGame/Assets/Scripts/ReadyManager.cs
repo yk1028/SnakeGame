@@ -19,11 +19,25 @@ namespace Com.Yk1028.SnakeGame
             Instance = this;
         }
 
+        public void Init()
+        {
+            this.gameObject.SetActive(true);
+            readyButton.SetActive(true);
+            connecting.SetActive(false);
+        }
+
         public void Ready()
         {
             AsynchronousClient.SendStartRequest();
             readyButton.SetActive(false);
             connecting.SetActive(true);
+        }
+
+        public void Close()
+        {
+            this.gameObject.SetActive(false);
+            readyButton.SetActive(false);
+            connecting.SetActive(false);
         }
 
         public void ShowRecords(List<bool> records)
@@ -33,12 +47,13 @@ namespace Com.Yk1028.SnakeGame
             if (records.Count == 0)
             {
                 result += "¾øÀ½";
-            } else
+            }
+            else
             {
                 result += ": ";
             }
 
-            foreach(bool record in records)
+            foreach (bool record in records)
             {
                 if (record)
                 {

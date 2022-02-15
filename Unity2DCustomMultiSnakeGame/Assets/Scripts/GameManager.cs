@@ -46,6 +46,7 @@ namespace Com.Yk1028.SnakeGame
 
             this.tailPrefab.transform.localScale = INIT_SCALE;
 
+            mainMenu.SetActive(true);
             gameOverMenu.SetActive(false);
 
             DontDestroyOnLoad(this.gameObject);
@@ -54,6 +55,7 @@ namespace Com.Yk1028.SnakeGame
         public void Init(int clientID, float appleX, float appleY)
         {
             mainMenu.SetActive(false);
+            ReadyManager.Instance.Close();
             enabled = true;
 
             CreateApple(appleX, appleY);
@@ -128,7 +130,6 @@ namespace Com.Yk1028.SnakeGame
             Destroy(enemySnakeCtrl.gameObject);
             Destroy(apple);
 
-
             gameOverMenu.SetActive(true);
 
             if (win)
@@ -141,10 +142,18 @@ namespace Com.Yk1028.SnakeGame
             }
         }
 
+        public void Restart()
+        {
+            gameOverMenu.SetActive(false);
+
+            mainMenu.SetActive(true);
+            LoginManager.Instance.Restart();
+        }
+
         public void Exit()
         {
+            gameOverMenu.SetActive(false);
             AsynchronousClient.EndClient();
-            ConnectManager.thread.Join();
 
             Application.Quit();
         }
