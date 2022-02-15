@@ -17,7 +17,7 @@ namespace Com.Yk1028.SnakeGame
         public void CreateUser()
         {
             this.gameObject.SetActive(false);
-            AsynchronousClient.SendCreateUser(LoginManager.Instance.userName.text);
+            AsynchronousClient.SendCreateUser(LoginManager.Instance.userNameField.text);
         }
 
         public void BackToLogin()

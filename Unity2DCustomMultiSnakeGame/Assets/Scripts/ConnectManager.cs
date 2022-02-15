@@ -33,7 +33,7 @@ namespace Com.Yk1028.SnakeGame
         public void PlayGame()
         {
             this.gameObject.SetActive(false);
-            LoginManager.Instance.gameObject.SetActive(true);
+            LoginManager.Instance.Init();
 
             try
             {

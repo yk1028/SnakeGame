@@ -6,7 +6,7 @@ namespace Com.Yk1028.SnakeGame
 {
     public class LoginManager : MonoBehaviour
     {
-        public Text userName;
+        public InputField userNameField;
 
         public static LoginManager Instance;
 
@@ -14,13 +14,18 @@ namespace Com.Yk1028.SnakeGame
         {
             this.gameObject.SetActive(false);
             Instance = this;
+        }
 
-            userName.text = PlayerPrefs.GetString("userName", "");
+        public void Init()
+        {
+            this.gameObject.SetActive(true);
+            
+            userNameField.text = PlayerPrefs.GetString("userName", "");
         }
 
         public void Login()
         {
-            AsynchronousClient.SendFindUser(userName.text);
+            AsynchronousClient.SendFindUser(userNameField.text);
         }
 
         public void LoginSucess()
@@ -28,7 +33,7 @@ namespace Com.Yk1028.SnakeGame
             this.gameObject.SetActive(false);
             ReadyManager.Instance.Init();
 
-            PlayerPrefs.SetString("userName", userName.text);
+            PlayerPrefs.SetString("userName", userNameField.text);
             PlayerPrefs.Save();
 
             AsynchronousClient.SendFindUserRecord();
@@ -42,8 +47,7 @@ namespace Com.Yk1028.SnakeGame
 
         public void Restart()
         {
-            this.gameObject.SetActive(true);
-            userName.text = PlayerPrefs.GetString("userName", "");
+            Init();
         }
     }
 }
