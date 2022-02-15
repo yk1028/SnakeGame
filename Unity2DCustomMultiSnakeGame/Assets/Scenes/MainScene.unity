@@ -267,6 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 67042502}
   - component: {fileID: 67042501}
+  - component: {fileID: 67042503}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -307,6 +308,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &67042503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67042500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35327c834df15a541b676603b983b831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &103110659
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,7 +813,6 @@ GameObject:
   - component: {fileID: 224146700}
   - component: {fileID: 224146702}
   - component: {fileID: 224146701}
-  - component: {fileID: 224146703}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -8927,18 +8939,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &224146703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224146696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4ddb937d043f0b4693ec84a19135a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &225255424
 GameObject:
   m_ObjectHideFlags: 0
@@ -11065,7 +11065,6 @@ GameObject:
   - component: {fileID: 1140830794}
   - component: {fileID: 1140830793}
   - component: {fileID: 1140830792}
-  - component: {fileID: 1140830791}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -11093,18 +11092,6 @@ RectTransform:
   m_AnchoredPosition: {x: 170, y: -200}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1140830791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140830789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b067cc4519847f642a1a4e63b40b9449, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1140830792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12687,7 +12674,6 @@ GameObject:
   - component: {fileID: 1900027329}
   - component: {fileID: 1900027328}
   - component: {fileID: 1900027327}
-  - component: {fileID: 1900027326}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -12715,18 +12701,6 @@ RectTransform:
   m_AnchoredPosition: {x: -70, y: -200}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1900027326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900027324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b067cc4519847f642a1a4e63b40b9449, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1900027327
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -91,7 +91,7 @@ namespace Com.Yk1028.SnakeGame
 
         public void ReceiveEnemySnakeInfo(float positionX, float positionY, float directionX, float directionY)
         {
-            enemySnakeCtrl.ChangeHeadValue(positionX, positionY, directionX, directionY);
+            enemySnakeCtrl.ChangeHead(positionX, positionY, directionX, directionY);
         }
 
         public void SendAppleInfo()

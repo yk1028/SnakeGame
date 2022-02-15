@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,24 +8,18 @@ namespace Com.Yk1028.SnakeGame
         private static readonly int INIT_NUM_OF_TAILS = 2;
 
         private Vector2 headDirection;
-        private ConcurrentBag<GameObject> tails;
-
-        private bool isChanged = false;
-        private Vector2 nextPosition;
-        private Vector2 nextDirection;
-
-        private readonly object _lockObj = new object();
+        private List<GameObject> tails;
 
         void Awake()
         {
-            tails = new ConcurrentBag<GameObject>();
+            tails = new List<GameObject>();
 
             AddTails(INIT_NUM_OF_TAILS);
         }
 
         public void AddTails(int count)
         {
-            Vector3 lastPosition = tails.TryPeek(out GameObject lastTail) ? lastTail.transform.position : this.transform.position;
+            Vector3 lastPosition = tails.Count == 0 ? this.transform.position : tails[tails.Count - 1].transform.position;
 
             for (int i = 1; i <= count; i++)
             {
@@ -39,15 +31,6 @@ namespace Com.Yk1028.SnakeGame
 
         public void Update()
         {
-            lock (_lockObj)
-            {
-                if (isChanged)
-                {
-                    ChangeHead();
-                    isChanged = false;
-                }
-            }
-
             SnakeUpdateSupporter.UpdateHead(this.gameObject, headDirection);
 
             if (tails != null)
@@ -57,21 +40,11 @@ namespace Com.Yk1028.SnakeGame
 
         }
 
-        public void ChangeHeadValue(float positionX, float positionY, float directionX, float directionY)
+        public void ChangeHead(float positionX, float positionY, float directionX, float directionY)
         {
-            lock (_lockObj)
-            {
-                this.nextPosition = new Vector2(positionX, positionY);
-                this.nextDirection = new Vector2(directionX, directionY);
-                this.isChanged = true;
-            }
-        }
+            this.transform.localPosition = new Vector2(positionX, positionY);
 
-        private void ChangeHead()
-        {
-            this.transform.localPosition = this.nextPosition;
-
-            ChangeHeadDirection(this.nextDirection);
+            ChangeHeadDirection(new Vector2(directionX, directionY));
         }
 
         public void ChangeHeadDirection(Vector2 direction)

@@ -203,8 +203,10 @@ namespace Com.Yk1028.SnakeGame
                             JObject apple = (JObject)rm.message.GetValue("apple");
                             float positionX = (float)apple.GetValue("posX");
                             float positionY = (float)apple.GetValue("posY");
-
-                            GameManager.Instance.Init(clientId, positionX, positionY);
+                            
+                            UnityMainThread.thread.AddJob(() => {
+                                GameManager.Instance.Init(clientId, positionX, positionY);
+                            });
                         }
                     }
                     else if (type == 1)
@@ -214,8 +216,10 @@ namespace Com.Yk1028.SnakeGame
                         float positionY = (float)snake.GetValue("posY");
                         float directionX = (float)snake.GetValue("dirX");
                         float directionY = (float)snake.GetValue("dirY");
-
-                        GameManager.Instance.ReceiveEnemySnakeInfo(positionX, positionY, directionX, directionY);
+                        
+                        UnityMainThread.thread.AddJob(() => {
+                            GameManager.Instance.ReceiveEnemySnakeInfo(positionX, positionY, directionX, directionY);
+                        });
                     }
                     else if (type == 2)
                     {
@@ -223,14 +227,19 @@ namespace Com.Yk1028.SnakeGame
                         float positionX = (float)apple.GetValue("posX");
                         float positionY = (float)apple.GetValue("posY");
                         bool isMine = (bool)rm.message.GetValue("isMine");
+                        
+                        UnityMainThread.thread.AddJob(() => {
+                            GameManager.Instance.ReceiveAppleInfo(positionX, positionY, isMine);
+                        });
 
-                        GameManager.Instance.ReceiveAppleInfo(positionX, positionY, isMine);
                     }
                     else if (type == 3)
                     {
                         bool win = (bool)rm.message.GetValue("win");
 
-                        GameManager.Instance.GameEnd(win);
+                        UnityMainThread.thread.AddJob(() => {
+                            GameManager.Instance.GameEnd(win);
+                        });
                     }
                     else if (type == 4)
                     {
@@ -238,17 +247,23 @@ namespace Com.Yk1028.SnakeGame
                         
                         if (isExist)
                         {
-                            LoginManager.Instance.LoginSucess();
+                            UnityMainThread.thread.AddJob(() => {
+                                LoginManager.Instance.LoginSucess();
+                            });
                         } else
                         {
-                            LoginManager.Instance.LoginFail();
+                            UnityMainThread.thread.AddJob(() => {
+                                LoginManager.Instance.LoginFail();
+                            });
                         }
                     }
                     else if (type == 5)
                     {
                         bool isSuccess = (bool)rm.message.GetValue("isSuccess");
 
-                        LoginManager.Instance.LoginSucess();
+                        UnityMainThread.thread.AddJob(() => {
+                            LoginManager.Instance.LoginSucess();
+                        });
                     }
                     else if (type == 6)
                     {
@@ -261,8 +276,10 @@ namespace Com.Yk1028.SnakeGame
                             bool win = (bool)record.GetValue("win");
                             list.Add(win);
                         }
-
-                        ReadyManager.Instance.ShowRecords(list);
+                        
+                        UnityMainThread.thread.AddJob(() => {
+                            ReadyManager.Instance.ShowRecords(list);
+                        });
                     }
                 }
 
