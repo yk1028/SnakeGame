@@ -17,8 +17,6 @@ namespace Com.Yk1028.SnakeGame
         // ManualResetEvent instances signal completion.  
         private static ManualResetEvent connectDone =
             new ManualResetEvent(false);
-        private static ManualResetEvent gameDone =
-            new ManualResetEvent(false);
 
         private static Socket client;
 
@@ -39,15 +37,8 @@ namespace Com.Yk1028.SnakeGame
                 client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
 
-                Receive(client);
-
                 // Receive the response from the remote device.
-                //gameDone.WaitOne();
-
-                // Release the socket.
-                //client.Shutdown(SocketShutdown.Both);
-                //client.Close();
-
+                Receive(client);
             }
             catch (Exception e)
             {
@@ -57,9 +48,9 @@ namespace Com.Yk1028.SnakeGame
 
         public static void EndClient()
         {
+            // Release the socket.
             client.Shutdown(SocketShutdown.Both);
             client.Close();
-            //gameDone.Set();
         }
 
         public static void SendStartRequest()
@@ -102,7 +93,7 @@ namespace Com.Yk1028.SnakeGame
                 .GenerateCreateUserRequest(username)
                 .ToSendData());
         }
-        
+
         public static void SendFindUserRecord()
         {
             Send(RequestMessageGenerator
@@ -193,94 +184,7 @@ namespace Com.Yk1028.SnakeGame
 
                     int type = (int)rm.message.GetValue("type");
 
-                    if (type == 0)
-                    {
-                        int clientId = (int)rm.message.GetValue("clientId");
-                        bool canStart = (bool)rm.message.GetValue("start");
-
-                        if (canStart)
-                        {
-                            JObject apple = (JObject)rm.message.GetValue("apple");
-                            float positionX = (float)apple.GetValue("posX");
-                            float positionY = (float)apple.GetValue("posY");
-                            
-                            UnityMainThread.thread.AddJob(() => {
-                                GameManager.Instance.Init(clientId, positionX, positionY);
-                            });
-                        }
-                    }
-                    else if (type == 1)
-                    {
-                        JObject snake = (JObject)rm.message.GetValue("snake");
-                        float positionX = (float)snake.GetValue("posX");
-                        float positionY = (float)snake.GetValue("posY");
-                        float directionX = (float)snake.GetValue("dirX");
-                        float directionY = (float)snake.GetValue("dirY");
-                        
-                        UnityMainThread.thread.AddJob(() => {
-                            GameManager.Instance.ReceiveEnemySnakeInfo(positionX, positionY, directionX, directionY);
-                        });
-                    }
-                    else if (type == 2)
-                    {
-                        JObject apple = (JObject)rm.message.GetValue("apple");
-                        float positionX = (float)apple.GetValue("posX");
-                        float positionY = (float)apple.GetValue("posY");
-                        bool isMine = (bool)rm.message.GetValue("isMine");
-                        
-                        UnityMainThread.thread.AddJob(() => {
-                            GameManager.Instance.ReceiveAppleInfo(positionX, positionY, isMine);
-                        });
-
-                    }
-                    else if (type == 3)
-                    {
-                        bool win = (bool)rm.message.GetValue("win");
-
-                        UnityMainThread.thread.AddJob(() => {
-                            GameManager.Instance.GameEnd(win);
-                        });
-                    }
-                    else if (type == 4)
-                    {
-                        bool isExist = (bool)rm.message.GetValue("isExist");
-                        
-                        if (isExist)
-                        {
-                            UnityMainThread.thread.AddJob(() => {
-                                LoginManager.Instance.LoginSucess();
-                            });
-                        } else
-                        {
-                            UnityMainThread.thread.AddJob(() => {
-                                LoginManager.Instance.LoginFail();
-                            });
-                        }
-                    }
-                    else if (type == 5)
-                    {
-                        bool isSuccess = (bool)rm.message.GetValue("isSuccess");
-
-                        UnityMainThread.thread.AddJob(() => {
-                            LoginManager.Instance.LoginSucess();
-                        });
-                    }
-                    else if (type == 6)
-                    {
-                        JArray records = (JArray)rm.message.GetValue("records");
-
-                        List<bool> list = new List<bool>(); 
-
-                        foreach(JObject record in records)
-                        {
-                            bool win = (bool)record.GetValue("win");
-                            list.Add(win);
-                        }
-                        
-                        UnityMainThread.thread.AddJob(() => {
-                            ReadyManager.Instance.ShowRecords(list);
-                        });
-                    }
+                    ResponseProcessor.run((ResponseType) type , rm);
                 }
 
                 state.ClearBuffer();
@@ -295,3 +199,4 @@ namespace Com.Yk1028.SnakeGame
         }
     }
 }
+

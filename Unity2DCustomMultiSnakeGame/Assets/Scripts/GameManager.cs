@@ -36,6 +36,8 @@ namespace Com.Yk1028.SnakeGame
 
         void Awake()
         {
+            ResponseProcessor.Init();
+
             if (instance)
             {
                 Destroy(this.gameObject);

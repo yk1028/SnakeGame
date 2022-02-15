@@ -55,14 +55,7 @@ namespace Com.Yk1028.SnakeGame
 
             foreach (bool record in records)
             {
-                if (record)
-                {
-                    result += "½Â ";
-                }
-                else
-                {
-                    result += "ÆÐ ";
-                }
+                result += record ? "½Â " : "ÆÐ ";
             }
 
             recordsText.text = result;
