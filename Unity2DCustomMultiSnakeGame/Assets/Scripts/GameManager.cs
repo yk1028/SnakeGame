@@ -19,6 +19,7 @@ namespace Com.Yk1028.SnakeGame
         public GameObject enemySnakePrefab;
         public GameObject applePrefab;
         public GameObject tailPrefab;
+        // public GameObject markerPrefab;
 
         private static GameManager instance = null;
 
@@ -75,6 +76,8 @@ namespace Com.Yk1028.SnakeGame
             var mySnake = Instantiate(snakePrefab, INIT_POSITION[clientId], Quaternion.identity);
             mySnakeCtrl = mySnake.GetComponent<SnakeController>();
             mySnakeCtrl.ChangeHeadDirection(INIT_DIRECTION[clientId]);
+
+            //var marker = Instantiate(markerPrefab, mySnake.transform);
 
         }
 

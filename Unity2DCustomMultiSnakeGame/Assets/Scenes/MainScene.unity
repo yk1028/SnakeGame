@@ -290,7 +290,7 @@ MonoBehaviour:
   mainMenu: {fileID: 1797975592}
   gameOverMenu: {fileID: 1321417145}
   result: {fileID: 1025316197}
-  snakePrefab: {fileID: 3738005375282055723, guid: d94a404dca83dd04db2b3151d8523707, type: 3}
+  snakePrefab: {fileID: 370338998894590272, guid: 7d71dcb254cf9514ab25c17b07248d7d, type: 3}
   enemySnakePrefab: {fileID: 3738005375282055723, guid: 05532182af6a6d447b7fb879c7cfab67, type: 3}
   applePrefab: {fileID: 6367536003638874900, guid: 571526e3a18c6b944998ad78e1c731af, type: 3}
   tailPrefab: {fileID: 1252197521566878769, guid: a26ce463513e2384fa5aaf8a83f31d1b, type: 3}
