@@ -184,17 +184,20 @@ namespace Com.Yk1028.SnakeGame
 
                     int type = (int)rm.message.GetValue("type");
 
-                    ResponseProcessor.run((ResponseType) type , rm);
+                    ResponseProcessor.run((ResponseType)type, rm);
                 }
-
-                state.ClearBuffer();
-
-                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReceiveCallback), state);
             }
             catch (Exception e)
             {
                 Debug.Log(e.ToString());
+            }
+            finally
+            {
+                StateObject state = (StateObject)ar.AsyncState;
+                state.ClearBuffer();
+
+                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReceiveCallback), state);
             }
         }
     }
