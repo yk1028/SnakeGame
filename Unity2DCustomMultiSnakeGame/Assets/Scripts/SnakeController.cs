@@ -88,7 +88,7 @@ namespace Com.Yk1028.SnakeGame
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag != "Apple")
+            if (!other.CompareTag("Apple"))
             {
                 GameManager.Instance.SendGameOver();
             }

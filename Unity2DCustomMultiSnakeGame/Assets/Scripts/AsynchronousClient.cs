@@ -34,15 +34,18 @@ namespace Com.Yk1028.SnakeGame
                 client = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 // Connect to the remote endpoint.  
-                client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
-                connectDone.WaitOne();
+                //client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
+
+                client.Connect(remoteEP);
+
+                //connectDone.WaitOne();
 
                 // Receive the response from the remote device.
                 Receive(client);
             }
             catch (Exception e)
             {
-                Debug.Log(e.ToString());
+                throw e;
             }
         }
 

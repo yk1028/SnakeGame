@@ -19,7 +19,7 @@ namespace Com.Yk1028.SnakeGame
         public void Init()
         {
             this.gameObject.SetActive(true);
-            
+
             userNameField.text = PlayerPrefs.GetString("userName", "");
         }
 

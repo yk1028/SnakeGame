@@ -7,8 +7,10 @@ namespace Com.Yk1028.SnakeGame
 {
     public class ConnectManager : MonoBehaviour
     {
+        public GameObject connectButton;
         public Text hostIP;
         public Text hostPort;
+        public Text errorText;
 
         private static ConnectManager instance = null;
 
@@ -33,19 +35,18 @@ namespace Com.Yk1028.SnakeGame
         public void PlayGame()
         {
             this.gameObject.SetActive(false);
-            LoginManager.Instance.Init();
 
             try
             {
-                Thread thread = new Thread(() => AsynchronousClient.StartClient("34.64.92.18", 3000));
-                //var thread = new Thread(() => AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text)));
-                thread.Start();
+                AsynchronousClient.StartClient(hostIP.text, int.Parse(hostPort.text));
+                LoginManager.Instance.Init();
             }
             catch (Exception e)
             {
                 Debug.Log(e.ToString());
+                errorText.text = e.Message;
+                this.gameObject.SetActive(true);
             }
-
         }
     }
 }

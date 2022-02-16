@@ -42,16 +42,7 @@ namespace Com.Yk1028.SnakeGame
 
         public void ShowRecords(List<bool> records)
         {
-            string result = "최근 전적 ";
-
-            if (records.Count == 0)
-            {
-                result += "없음";
-            }
-            else
-            {
-                result += ": ";
-            }
+            string result = records.Count == 0 ? "최근 전적 없음" : "최근 전적 : ";
 
             foreach (bool record in records)
             {
