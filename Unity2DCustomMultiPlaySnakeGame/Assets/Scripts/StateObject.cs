@@ -23,7 +23,12 @@ namespace Com.Yk1028.SnakeGame
         public ResponseMessage GetResponseMessage()
         {
             string json = utf8.GetString(buffer);
-            return JsonConvert.DeserializeObject<ResponseMessage>(json); ;
+            Debug.Log(json);
+
+            var settings = new JsonSerializerSettings();
+            settings.CheckAdditionalContent = false;
+
+            return JsonConvert.DeserializeObject<ResponseMessage>(json, settings);
         }
 
         public void ClearBuffer()
