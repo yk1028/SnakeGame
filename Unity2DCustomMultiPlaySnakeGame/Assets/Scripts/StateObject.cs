@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
@@ -9,10 +11,15 @@ namespace Com.Yk1028.SnakeGame
 {
     public class StateObject
     {
-        private static UTF8Encoding utf8 = new UTF8Encoding();
+        private static readonly UTF8Encoding utf8 = new UTF8Encoding();
+        private static readonly string[] seperator = { "<EOJ>" };
+        private static readonly JsonSerializerSettings settings = new JsonSerializerSettings()
+        {
+            CheckAdditionalContent = false
+        };
 
         // Size of receive buffer.  
-        public const int BufferSize = 4096;
+        public const int BufferSize = 1024;
 
         // Receive buffer.  
         public byte[] buffer = new byte[BufferSize];
@@ -20,15 +27,19 @@ namespace Com.Yk1028.SnakeGame
         // Client socket.
         public Socket workSocket = null;
 
-        public ResponseMessage GetResponseMessage()
+        public List<ResponseMessage> GetResponseMessages()
         {
-            string json = utf8.GetString(buffer);
-            Debug.Log(json);
+            string[] jsons = utf8.GetString(buffer)
+                .Split(seperator, StringSplitOptions.None);
+            jsons = jsons.Take(jsons.Count() - 1).ToArray();
+            List<ResponseMessage> messages = new List<ResponseMessage>();
 
-            var settings = new JsonSerializerSettings();
-            settings.CheckAdditionalContent = false;
-
-            return JsonConvert.DeserializeObject<ResponseMessage>(json, settings);
+            foreach (var json in jsons)
+            {
+                Debug.Log(json);
+                messages.Add(JsonConvert.DeserializeObject<ResponseMessage>(json, settings));
+            }
+            return messages;
         }
 
         public void ClearBuffer()

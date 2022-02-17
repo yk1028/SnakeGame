@@ -182,11 +182,12 @@ namespace Com.Yk1028.SnakeGame
 
                 if (bytesRead > 1)
                 {
-                    ResponseMessage rm = state.GetResponseMessage();
+                    foreach (var rm in state.GetResponseMessages())
+                    {
+                        int type = (int)rm.message.GetValue("type");
 
-                    int type = (int)rm.message.GetValue("type");
-
-                    ResponseProcessor.run((ResponseType)type, rm);
+                        ResponseProcessor.run((ResponseType)type, rm);
+                    }
                 }
 
                 state.ClearBuffer();
