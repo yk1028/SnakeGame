@@ -11284,8 +11284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectButton: {fileID: 579191667}
-  hostIP: {fileID: 286638722}
-  hostPort: {fileID: 1744380129}
+  hostIPField: {fileID: 1898784653}
+  hostPortField: {fileID: 1090357035}
   errorText: {fileID: 1978702928}
 --- !u!1 &1305290659
 GameObject:

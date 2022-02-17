@@ -146,7 +146,6 @@ namespace Com.Yk1028.SnakeGame
         public void Restart()
         {
             gameOverMenu.SetActive(false);
-
             mainMenu.SetActive(true);
             LoginManager.Instance.Restart();
         }

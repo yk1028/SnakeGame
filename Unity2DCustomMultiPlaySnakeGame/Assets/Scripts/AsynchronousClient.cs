@@ -33,8 +33,7 @@ namespace Com.Yk1028.SnakeGame
                 // Create a TCP/IP socket.  
                 client = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-                // Connect to the remote endpoint.  
-                //client.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), client);
+                // Connect to the remote endpoint.
 
                 client.Connect(remoteEP);
 
